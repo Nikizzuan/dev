@@ -1,0 +1,7 @@
+{
+  "name": "MyQRWallet",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
