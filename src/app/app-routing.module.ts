@@ -19,7 +19,8 @@ const routes: Routes = [
      path: 'profile',
     loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'qr-pay', loadChildren: './qr-pay/qr-pay.module#QrPayPageModule' },
-  { path: 'donation', loadChildren: './donation/donation.module#DonationPageModule' }
+  { path: 'donation', loadChildren: './donation/donation.module#DonationPageModule' },
+  { path: 'merchant-outlet', loadChildren: './merchant-outlet/merchant-outlet.module#MerchantOutletPageModule' }
 ];
 
 @NgModule({

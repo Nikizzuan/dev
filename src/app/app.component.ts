@@ -29,6 +29,16 @@ export class AppComponent {
       title: 'QrPay',
       url: '/qr-pay',
       icon: 'list'
+    },
+    {
+      title: 'Donation',
+      url: '/donation',
+      icon: 'list'
+    },
+    {
+      title: 'Merchant Outlet',
+      url: '/merchant-outlet',
+      icon: 'list'
     }
   ];
 
