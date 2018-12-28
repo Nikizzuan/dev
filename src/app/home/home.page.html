@@ -1,19 +1,87 @@
+
+<style>
+    .main-titlepage{
+    position: absolute;
+
+    width: 166px;
+    height: 22px;
+    left: 19px;
+    top: 69px;
+    
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 14px;
+    text-align: center;
+    
+    color: #D4CAD8;
+    }
+    .BalanceNum{
+    position: absolute;
+  
+    width: 231px;
+    height: 57px;
+    left: 19px;
+    top: 100px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 48px;
+
+    color: #FFFFFF;
+    }
+    
+    </style>
+
 <ion-header>
   <ion-toolbar color ="primary">
+    
     <ion-buttons slot="start">
       <ion-menu-button style="color: #ffffff;"></ion-menu-button>
     </ion-buttons>
+  
     <ion-title  >
       E-wallet
+     
     </ion-title>
-  </ion-toolbar>
+
+
+  </ion-toolbar >
+
+
+  <div style="min-height: 150px!important; background: rgb(90, 115, 228);"  >
+      <ion-label class="main-titlepage">ACCOUNT BALANCE</ion-label>
+      <ion-label class="BalanceNum">RM 00.0</ion-label>
+  
+  </div>
+  <br>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="Voucher">
+      <ion-icon name="flash"></ion-icon>
+      <ion-label>Voucher</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="Transition History">
+      <ion-icon name="apps"></ion-icon>
+      <ion-label>Transition History</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>
+
 </ion-header>
 
-<style>
-
-
-</style>
 <ion-content >
-
+    <ion-card *ngFor="let hero of heroes">  
+        
+        <ion-card-content>
+          <ion-card-title>
+         
+          </ion-card-title>
+        </ion-card-content>
+      </ion-card>
 </ion-content>
 
