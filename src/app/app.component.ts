@@ -24,6 +24,11 @@ export class AppComponent {
       title: 'Profile',
       url: '/profile',
       icon: 'list'
+    },
+    {
+      title: 'QrPay',
+      url: '/qr-pay',
+      icon: 'list'
     }
   ];
 

@@ -16,8 +16,10 @@ const routes: Routes = [
     loadChildren: './list/list.module#ListPageModule'
   },
   {
-     path: 'Profile',
-    loadChildren: './profile/profile.module#ProfilePageModule' }
+     path: 'profile',
+    loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'qr-pay', loadChildren: './qr-pay/qr-pay.module#QrPayPageModule' },
+  { path: 'donation', loadChildren: './donation/donation.module#DonationPageModule' }
 ];
 
 @NgModule({
