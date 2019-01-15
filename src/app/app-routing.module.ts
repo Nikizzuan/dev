@@ -20,7 +20,9 @@ const routes: Routes = [
     loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'qr-pay', loadChildren: './qr-pay/qr-pay.module#QrPayPageModule' },
   { path: 'donation', loadChildren: './donation/donation.module#DonationPageModule' },
-  { path: 'merchant-outlet', loadChildren: './merchant-outlet/merchant-outlet.module#MerchantOutletPageModule' }
+  { path: 'merchant-outlet', loadChildren: './merchant-outlet/merchant-outlet.module#MerchantOutletPageModule' },
+  { path: 'addcupon', loadChildren: './addcupon/addcupon.module#AddcuponPageModule' },
+  { path: 'cuponstore', loadChildren: './cuponstore/cuponstore.module#CuponstorePageModule' }
 ];
 
 @NgModule({

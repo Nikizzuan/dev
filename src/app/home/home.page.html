@@ -75,11 +75,11 @@
 </ion-header>
 
 <ion-content >
-    <ion-card *ngFor="let hero of heroes">  
-        
+    <ion-card *ngFor="let item of todos">  
         <ion-card-content>
           <ion-card-title>
-         
+        {{ item.CuponName }}
+        <p>{{ item.CreatedAt | date:'short' }}</p>
           </ion-card-title>
         </ion-card-content>
       </ion-card>

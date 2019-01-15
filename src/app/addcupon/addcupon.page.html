@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>addcupon</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list lines="full">
+
+    <ion-item>
+      <ion-label fixed>Cupon Name</ion-label>
+      <ion-input type="text" [(ngModel)]="todo.CuponName"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label fixed>Expire date</ion-label>
+      <ion-input type="text" [(ngModel)]="todo.Expiredate"></ion-input>
+    </ion-item>
+  
+  </ion-list>
+<ion-button expand="full" (click)="saveTodo()">save</ion-button>
+</ion-content>
