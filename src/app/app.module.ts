@@ -10,26 +10,31 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { GoogleLoginComponent } from './google-login/google-login.component';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
-  declarations: [AppComponent, GoogleLoginComponent],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicModule,
     AppRoutingModule,
+    CommonModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
+
   providers: [
     StatusBar,
+
     GooglePlus,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

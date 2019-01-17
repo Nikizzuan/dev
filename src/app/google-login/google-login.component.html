@@ -1,3 +1,16 @@
-<p>
-  google-login works!
-</p>
+<div  *ngIf="(user | async) || as user">
+
+<button ion-button 
+*ngIf="!user.uid" 
+(click)="googleLogin()">Login With google</button>
+
+<div *ngIf="user.uid">
+ You are already logged as {{ user.uid }}
+
+  <button ion-button (click)="signOut()">
+    Signout
+  </button>
+
+</div>
+
+</div>
