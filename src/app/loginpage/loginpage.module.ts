@@ -1,21 +1,18 @@
-import { NgModule, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CuponstorePage } from './cuponstore.page';
-import { Todo, TodoService } from '../services/todo.service';
+import { LoginpagePage } from './loginpage.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CuponstorePage
+    component: LoginpagePage
   }
 ];
-
-
 
 @NgModule({
   imports: [
@@ -24,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CuponstorePage]
+  declarations: [LoginpagePage]
 })
-export class CuponstorePageModule  {}
+export class LoginpagePageModule {}

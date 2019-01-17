@@ -22,7 +22,9 @@ const routes: Routes = [
   { path: 'donation', loadChildren: './donation/donation.module#DonationPageModule' },
   { path: 'merchant-outlet', loadChildren: './merchant-outlet/merchant-outlet.module#MerchantOutletPageModule' },
   { path: 'addcupon', loadChildren: './addcupon/addcupon.module#AddcuponPageModule' },
-  { path: 'cuponstore', loadChildren: './cuponstore/cuponstore.module#CuponstorePageModule' }
+  { path: 'cuponstore', loadChildren: './cuponstore/cuponstore.module#CuponstorePageModule' },
+  { path: 'registerpage', loadChildren: './registerpage/registerpage.module#RegisterpagePageModule' },
+  { path: 'loginpage', loadChildren: './loginpage/loginpage.module#LoginpagePageModule' }
 ];
 
 @NgModule({

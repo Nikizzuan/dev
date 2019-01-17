@@ -34,21 +34,4 @@ import { Todo, TodoService } from '../services/todo.service';
 
 
 
-export class HomePageModule implements OnInit {
- todos: Todo[];
-
- constructor(private todoService: TodoService) { }
-
- ngOnInit() {
-
-  this.todoService.getTodos().subscribe( res => {
-   this.todos = res;
- });
-
- }
-
- remove(item) {
-   this.todoService.removeTodo(item.id);
- }
-
-}
+export class HomePageModule  {}
