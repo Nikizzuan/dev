@@ -1,16 +1,16 @@
-<div  *ngIf="(user | async) || as user">
 
-<button ion-button 
-*ngIf="!user.uid" 
-(click)="googleLogin()">Login With google</button>
+<ion-content *ngIf="(user | async) || {} as user">
 
-<div *ngIf="user.uid">
+<ion-button *ngIf="!user.uid" (click)="googleLogin()">Login With google</ion-button>
+
+<ion-content *ngIf="user.uid">
  You are already logged as {{ user.uid }}
 
-  <button ion-button (click)="signOut()">
+  <ion-button (click)="signOut()">
     Signout
-  </button>
+  </ion-button>
 
-</div>
+<ion-content>
 
-</div>
+<ion-content>
+  

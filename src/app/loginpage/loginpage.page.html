@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="(user | async) || {} as user">
   <ion-toolbar>
     <ion-title>loginpage</ion-title>
   </ion-toolbar>
@@ -6,6 +6,7 @@
 
 <ion-content >
   
-  <app-google-login></app-google-login>
+<app-google-login></app-google-login>
+    
 
 </ion-content>

@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Platform } from '@ionic/angular';
 import * as firebase from 'firebase/app';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-google-login',
   templateUrl: './google-login.component.html',
@@ -15,9 +16,10 @@ export class GoogleLoginComponent {
 
   constructor(private afAuth: AngularFireAuth,
               private gplus: GooglePlus,
-              private platform: Platform) {
+              private platform: Platform,
+              private authservice: AuthService) {
 
-    this.user = this.afAuth.authState;
+    this.user = authservice.currentUserObservable;
 
   }
 
@@ -58,8 +60,9 @@ export class GoogleLoginComponent {
 
 
   signOut() {
-    this.afAuth.auth.signOut();
+    this.authservice.signOut();
   }
+
 }
 
  function newFunction(gplusUser: any): void | PromiseLike<void> {

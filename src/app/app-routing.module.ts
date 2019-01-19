@@ -24,7 +24,10 @@ const routes: Routes = [
   { path: 'addcupon', loadChildren: './addcupon/addcupon.module#AddcuponPageModule' },
   { path: 'cuponstore', loadChildren: './cuponstore/cuponstore.module#CuponstorePageModule' },
   { path: 'registerpage', loadChildren: './registerpage/registerpage.module#RegisterpagePageModule' },
-  { path: 'loginpage', loadChildren: './loginpage/loginpage.module#LoginpagePageModule' }
+  { path: 'loginpage', loadChildren: './loginpage/loginpage.module#LoginpagePageModule' },  { path: 'studentreg', loadChildren: './studentreg/studentreg.module#StudentregPageModule' },
+  { path: 'staffreg', loadChildren: './staffreg/staffreg.module#StaffregPageModule' },
+  { path: 'retailerreg', loadChildren: './retailerreg/retailerreg.module#RetailerregPageModule' }
+
 ];
 
 @NgModule({

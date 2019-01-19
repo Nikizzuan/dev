@@ -36,7 +36,7 @@
     
     </style>
 
-<ion-header>
+<ion-header *ngIf="(user | async) || {} as user" >
   <ion-toolbar color ="primary">
     
     <ion-buttons slot="start">
@@ -44,7 +44,7 @@
     </ion-buttons>
   
     <ion-title  >
-      E-wallet
+      E-wallet 
      
     </ion-title>
 
@@ -53,18 +53,18 @@
 
 
   <div style="min-height: 150px!important; background: rgb(90, 115, 228);"  >
-      <ion-label class="main-titlepage">ACCOUNT BALANCE</ion-label>
-      <ion-label class="BalanceNum">RM 00.0</ion-label>
+      <ion-label class="main-titlepage">ACCOUNT BALANCE  </ion-label>
+      <ion-label class="BalanceNum">RM 00.0 </ion-label>
   
   </div>
   <br>
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="Voucher">
+    <ion-tab-button tab="Voucher" (click)="showVoucher()">
       <ion-icon name="flash"></ion-icon>
       <ion-label>Voucher</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="Transition History">
+    <ion-tab-button tab="Transition History"  (click)="showTransition()" >
       <ion-icon name="apps"></ion-icon>
       <ion-label>Transition History</ion-label>
     </ion-tab-button>
@@ -75,6 +75,7 @@
 </ion-header>
 
 <ion-content >
+    <ion-content *ngIf="!tabsinfo" >
     <ion-card *ngFor="let item of todos">  
         <ion-card-content>
           <ion-card-title>
@@ -83,5 +84,23 @@
           </ion-card-title>
         </ion-card-content>
       </ion-card>
+
+    </ion-content>
+
+<ion-content  *ngIf="tabsinfo">
+      <ion-list>
+          <ion-item-sliding *ngFor="let item of todos">
+            <ion-item >
+              <ion-label>{{ item.CuponName }}
+                  <p>{{ item.CreatedAt | date:'short' }}</p>
+                </ion-label>
+               
+            </ion-item>
+      
+      
+          </ion-item-sliding>
+          
+        </ion-list>
+    </ion-content> 
 </ion-content>
 
