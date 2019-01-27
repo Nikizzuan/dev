@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 // import { loginpage } from  './loginpage/loginpage.page'
-
+// test
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
