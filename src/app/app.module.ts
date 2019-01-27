@@ -16,10 +16,16 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { GoogleLoginComponent } from './google-login/google-login.component';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { CommonModule } from '@angular/common';
-
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { MapslocaterComponent } from './mapslocater/mapslocater.component';
+import { Network } from '@ionic-native/network';
+import { ConnectivityServiceService } from '../app/services/connectivity-service.service';
+import { GoogleMapsService } from '../app/services/google-maps.service';
+import { LocationSelectPageModule } from '../app/location-select/location-select.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MapslocaterComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -27,6 +33,7 @@ import { CommonModule } from '@angular/common';
     IonicModule,
     AppRoutingModule,
     CommonModule,
+    // LocationSelectPageModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule
@@ -34,7 +41,11 @@ import { CommonModule } from '@angular/common';
 
   providers: [
     StatusBar,
-
+    Geolocation,
+  // Network,
+   // ConnectivityServiceService,
+ //   GoogleMapsService,
+    NativeGeocoder,
     GooglePlus,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

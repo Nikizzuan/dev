@@ -20,25 +20,45 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
-    "@ionic-native/core": "5.0.0-beta.21",
+    "@ionic-native/core": "^5.0.0-beta.24",
     "@ionic-native/firebase": "^4.18.0",
     "@ionic-native/firebase-authentication": "^4.19.0",
+    "@ionic-native/geolocation": "^5.0.0-beta.24",
+    "@ionic-native/google-maps": "^5.0.0-beta.25",
     "@ionic-native/google-plus": "^5.0.0-beta.14",
+    "@ionic-native/native-geocoder": "^5.0.0-beta.24",
+    "@ionic-native/network": "^4.20.0",
     "@ionic-native/splash-screen": "5.0.0-beta.21",
     "@ionic-native/status-bar": "5.0.0-beta.21",
     "@ionic/angular": "4.0.0-beta.16",
     "@ionic/pro": "2.0.3",
+    "@types/google-maps": "^3.2.0",
     "angularfire2": "^5.1.1",
     "bower": "^1.8.4",
     "cordova": "^8.1.2",
+    "cordova-android": "^7.1.4",
+    "cordova-browser": "5.0.4",
+    "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-firebase": "2.0.5",
     "cordova-plugin-firebase-authentication": "1.0.1",
+    "cordova-plugin-geolocation": "4.0.1",
     "cordova-plugin-googleplus": "7.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.1.3",
+    "cordova-plugin-ionic-webview": "^2.3.2",
+    "cordova-plugin-nativegeocoder": "3.1.3",
+    "cordova-plugin-network-information": "2.0.1",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-support-android-plugin": "^1.0.1",
+    "cordova-support-google-services": "^1.2.1",
     "core-js": "^2.5.4",
     "firebase": "^5.7.2",
     "gulp": "^4.0.0",
     "ionic": "^4.6.0",
+    "platform": "1.3.5",
     "rxjs": "~6.3.3",
+    "rxjs-compat": "^6.3.3",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
@@ -51,9 +71,10 @@
     "@angular/compiler-cli": "~7.0.0",
     "@angular/language-service": "~7.0.0",
     "@ionic/angular-toolkit": "~1.2.0",
-    "@types/node": "~10.12.0",
+    "@types/googlemaps": "^3.30.16",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~10.12.0",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
@@ -76,7 +97,23 @@
       },
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.415399973733-9g5vkks81bp20g8vt2onj50bo4bpi8n7"
+      },
+      "cordova-plugin-nativegeocoder": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-geolocation": {
+        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
       }
-    }
+    },
+    "platforms": [
+      "android"
+    ]
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo, TodoService } from '../services/todo.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-cuponstore',
@@ -10,7 +11,7 @@ export class CuponstorePage implements OnInit {
 
   todos: Todo[];
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService, private authservice: AuthService) { }
 
   ngOnInit() {
     this.todoService.getTodos().subscribe( res => {
@@ -22,4 +23,9 @@ export class CuponstorePage implements OnInit {
   remove(item) {
     this.todoService.removeTodo(item.id);
   }
+
+  signOut() {
+    this.authservice.signOut();
+  }
+
 }

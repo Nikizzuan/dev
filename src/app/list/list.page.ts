@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-list',
@@ -6,28 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['list.page.scss']
 })
 export class ListPage implements OnInit {
-  private selectedItem: any;
-  private icons = [
-    'flask',
-    'wifi',
-    'beer',
-    'football',
-    'basketball',
-    'paper-plane',
-    'american-football',
-    'boat',
-    'bluetooth',
-    'build'
-  ];
-  public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor() {
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+
+  notification:  any = {
+   icon: 'notifications-outline',
+   title: 'A voucher is about to expire : CS Log Off Night',
+   message: 'Hello Student!! you have not yet redem you voucher of RM 30...',
+   date: Date.now()
+};
+
+  constructor(private authservice: AuthService) {
+
   }
 
   ngOnInit() {
@@ -36,4 +25,10 @@ export class ListPage implements OnInit {
   // navigate(item) {
   //   this.router.navigate(['/list', JSON.stringify(item)]);
   // }
+
+
+  signOut() {
+    this.authservice.signOut();
+  }
+
 }

@@ -19,11 +19,20 @@ export class HomePage implements OnInit {
   tabsinfo: any;
   usercheck: any;
 
+  transition:  any = {
+    icon: 'arrow-round-down',
+    icon2: 'remove',
+    title: 'Food and beverages',
+    amount: '07.00',
+    date: Date.now(),
+    color: 'red'
 
-  constructor(private todoService: TodoService, private afAuth: AngularFireAuth,
-    private gplus: GooglePlus,
-    private platform: Platform, private router: Router, private fireService: AuthService) {
-      this.user = fireService.currentUserObservable;
+ };
+
+
+  constructor(private todoService: TodoService,
+  private router: Router, private authservice: AuthService) {
+      this.user = authservice.currentUserObservable;
       this.tabsinfo = null; }
 
   ngOnInit() {
@@ -40,6 +49,10 @@ export class HomePage implements OnInit {
       this.navCtrl.navigateForward('loginpage');
     }
     */
+  }
+
+  signOut() {
+    this.authservice.signOut();
   }
 
 

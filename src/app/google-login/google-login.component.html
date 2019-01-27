@@ -1,15 +1,48 @@
 
-<ion-content *ngIf="(user | async) || {} as user">
+<style>
+.test{
+padding-top: 120%;
 
-<ion-button *ngIf="!user.uid" (click)="googleLogin()">Login With google</ion-button>
+}
+</style>
+<ion-content  *ngIf="(user | async) || {} as user">
+        <ion-col>
+                <div text-center>
+                    
+<ion-button size='small' class="test" *ngIf="!user.uid" (click)="googleLogin()">Google Login</ion-button>
+
+                </div>      
+        </ion-col>
+
 
 <ion-content *ngIf="user.uid">
- You are already logged as {{ user.uid }}
 
-  <ion-button (click)="signOut()">
-    Signout
-  </ion-button>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+        <ion-col>
+                <div text-center>
+                    
+                        <ion-label text-center>Welcome back, {{ user.displayName }}</ion-label>
+              </div>      
+        </ion-col>
+        
 
+    
+
+ 
 <ion-content>
 
 <ion-content>

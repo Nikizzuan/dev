@@ -1,23 +1,60 @@
-<ion-header>
-  <ion-toolbar color ="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button style="color: #ffffff;"></ion-menu-button>
-    </ion-buttons>
-    <ion-title  >
-      List
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
+<style>
+.title{
+  font-size: 16px;
+
+}
+.messagetext{
+  font-size: 12px;
+
+}
+.item-note{
+  font-size: 12px;
+
+}
+
+</style>
+<ion-header >
+    <ion-toolbar color ="primary">
+      
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: #ffffff;"></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+      <ion-button  (click)="signOut()">
+       Log Out
+       </ion-button>
+    
+      </ion-buttons>
+   
+      <ion-title   >
+        Notification  
+       
+      </ion-title>
+  
+  
+    </ion-toolbar >
+  
+  
+  </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
+    <ion-item >
+      <ion-icon  [name]="notification.icon" slot="start"></ion-icon>
+      <ion-label text-wrap>
+      <ion-text class="title" color="primary">
+        <p class="title" >{{notification.title}}</p>
+      </ion-text>
+      <p class="messagetext">{{notification.message}}</p>
+     
+    </ion-label>
+      
+      <div  class="item-note " slot="end">
+        {{notification.date}}
       </div>
+
+      
     </ion-item>
   </ion-list>
   <!--

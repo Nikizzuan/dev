@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'loginpage',
     pathMatch: 'full'
   },
   {
@@ -24,9 +24,14 @@ const routes: Routes = [
   { path: 'addcupon', loadChildren: './addcupon/addcupon.module#AddcuponPageModule' },
   { path: 'cuponstore', loadChildren: './cuponstore/cuponstore.module#CuponstorePageModule' },
   { path: 'registerpage', loadChildren: './registerpage/registerpage.module#RegisterpagePageModule' },
-  { path: 'loginpage', loadChildren: './loginpage/loginpage.module#LoginpagePageModule' },  { path: 'studentreg', loadChildren: './studentreg/studentreg.module#StudentregPageModule' },
+  { path: 'loginpage', loadChildren: './loginpage/loginpage.module#LoginpagePageModule' },
+  { path: 'studentreg', loadChildren: './studentreg/studentreg.module#StudentregPageModule' },
   { path: 'staffreg', loadChildren: './staffreg/staffreg.module#StaffregPageModule' },
-  { path: 'retailerreg', loadChildren: './retailerreg/retailerreg.module#RetailerregPageModule' }
+  { path: 'retailerreg', loadChildren: './retailerreg/retailerreg.module#RetailerregPageModule' },
+  { path: 'LocationSelect', loadChildren: './location-select/location-select.module#LocationSelectPageModule' },
+  { path: 'retailerhomepage', loadChildren: './retailerhomepage/retailerhomepage.module#RetailerhomepagePageModule' },
+  { path: 'productmanagement', loadChildren: './productmanagement/productmanagement.module#ProductmanagementPageModule' },
+  { path: 'redemtaion', loadChildren: './redemtaion/redemtaion.module#RedemtaionPageModule' }
 
 ];
 

@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { TestBed } from '@angular/core/testing';
 
 
@@ -16,82 +16,32 @@ import { TestBed } from '@angular/core/testing';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnInit {
+export class AuthService  {
 
 
   user: Observable<firebase.User>;
   authState: any = null;
 
-  constructor(
+ constructor(
     private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private gplus: GooglePlus,
         private platform: Platform,
-        // private db: AngularFireDatabase,
-        private router: Router
+        private router: Router,
+        public navCtrl: NavController
   ) {
     this.user = this.afAuth.authState;
-    // this.user = this.afAuth.authState;
 
-/*
-      this.afAuth.authState.subscribe((auth) => {
-      this.authState = auth;
-       });
-   this.user$ = this.afAuth.authState.pipe(
-      switchMap(user => {
-          // Logged in
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          // Logged out
-          return of(null);
-        }
-      })
-    ); */
     this.afAuth.auth.onAuthStateChanged(user =>  {
 
       this.authState = user;
 
     });
-
    }
-
-   ngOnInit() {
-
-    this.afAuth.auth.onAuthStateChanged(user =>  {
-
-      this.authState = user;
-
-    });
-
-
-  }
-
-
-   /* async googleSignin() {
-    const provider = new auth.GoogleAuthProvider();
-    const credential = await this.afAuth.auth.signInWithPopup(provider);
-    return this.updateUserData(credential.user);
-  } */
-
-/*  private updateUserData(user) {
-    // Sets user data to firestore on login
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-
-    const data = {
-      uid: user.uid,
-      email: user.email,
-      matricNum: user.matricNum,
-      userType: user.userType,
-      universiti: user.universiti,
-    };
-
-    return userRef.set( data, { merge: true });
-
-  }*/
 
   async signOut() {
     await this.afAuth.auth.signOut();
+    this.navCtrl.navigateForward('loginpage');
     // this.router.navigate(['/']);
   }
 
@@ -112,6 +62,7 @@ export class AuthService implements OnInit {
   get currentUserId(): string {
     return this.authenticated ? this.authState.uid : '';
   }
+
   get currentUserEmail(): string {
     return this.authenticated ? this.authState.email : '';
   }
@@ -198,28 +149,6 @@ export class AuthService implements OnInit {
        .catch(error => console.log(error));
   }
 
-  // Sends email allowing user to reset password
-
-
-  //// Sign Out ////
-
-  //// Helpers ////
-
- /* private updateUserData(): void {
-  // Writes user name and email to realtime db
-  // useful if your app displays information about users or for admin features
-
-    const path = `users/${this.currentUserId}`; // Endpoint on firebase
-    const data = {
-                  email: this.authState.email,
-                  name: this.authState.displayName
-                };
- this.afs.doc(`users/${user.uid}`)
-    this.db.object(path).update(data)
-    .catch(error => console.log(error));
-
-  }
-*/
 }
 
 function newFunction(gplusUser: any): void | PromiseLike<void> {

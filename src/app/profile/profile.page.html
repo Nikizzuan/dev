@@ -1,14 +1,109 @@
-<ion-header>
-  <ion-toolbar color ="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button style="color: #ffffff;"></ion-menu-button>
-    </ion-buttons>
-    <ion-title  >
-      Profile
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content padding>
+<style>
+
+
+sub {
+  font-size: 18px;
+}
+
+</style>
+<ion-header >
+    <ion-toolbar color ="primary">
+      
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: #ffffff;"></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+      <ion-button  (click)="signOut()">
+       Log Out
+       </ion-button>
+    
+      </ion-buttons>
+   
+      <ion-title   >
+        Profile  
+       
+      </ion-title>
+  
+  
+    </ion-toolbar >
+  
+  
+  </ion-header>
+  
+<ion-content >
+  
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+ 
+
+    <ion-col>
+        <div text-center>
+            <ion-list lines="full">
+           <ion-item *ngIf="isRetailer || isStudent">
+             <p>
+            <sub >Name : </sub>
+            <sub >{{user.userName}}</sub>
+            </p>
+          </ion-item>
+
+
+          <ion-item *ngIf="isRetailer">
+              <p>
+             <sub >Shop Name : </sub>
+             <sub >{{user.storeName}}</sub>
+             </p>
+           </ion-item>
+ 
+
+          <ion-item *ngIf="isStudent">
+              <p>
+             <sub >Matric Number : </sub>
+             <sub >{{user.matricNum}}</sub>
+             </p>
+           </ion-item>
+           
+          <ion-item *ngIf="isRetailer">
+              <p>
+             <sub >Identification Number : </sub>
+             <sub >{{user.matricNum}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item *ngIf="isRetailer || isStudent" >
+              <p>
+             <sub > University : </sub>
+             <sub >{{user.University}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item *ngIf="isRetailer || isStudent" > 
+              <p>
+             <sub > Email : </sub>
+             <sub >{{user.email}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item *ngIf="isRetailer || isStudent">  
+              <p>
+             <sub > User Type : </sub>
+             <sub >{{user.usertype}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item *ngIf="isRetailer">
+              <p>
+             <sub > Shop Address : </sub>
+             <sub >{{user.storeAdress}}</sub>
+             </p>
+           </ion-item>
+        </ion-list>
+
+          </div>      
+    </ion-col>
+        
 
 </ion-content>

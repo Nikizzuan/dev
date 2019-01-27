@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-donation',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DonationPage implements OnInit {
 
-  constructor() { }
+  constructor(private authservice: AuthService) { }
 
   ngOnInit() {
   }
 
+  signOut() {
+    this.authservice.signOut();
+  }
 }

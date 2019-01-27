@@ -1,0 +1,134 @@
+
+<style>
+    .main-titlepage{
+    position: absolute;
+
+    width: 166px;
+    height: 22px;
+    left: 19px;
+    top: 69px;
+    
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 14px;
+    text-align: center;
+    
+    color: #D4CAD8;
+    }
+    .BalanceNum{
+    position: absolute;
+  
+    width: 231px;
+    height: 57px;
+    left: 19px;
+    top: 100px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 48px;
+
+    color: #FFFFFF;
+    }
+    
+    .title{
+  font-size: 16px;
+
+}
+.messagetext{
+  font-size: 12px;
+
+}
+.item-note{
+  font-size: 12px;
+
+}
+
+.icon1{
+  -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  
+
+}
+    </style>
+
+<ion-header *ngIf="(user | async) || {} as user" >
+  <ion-toolbar color ="primary">
+    
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: #ffffff;"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+    <ion-button  (click)="signOut()">
+     Log Out
+     </ion-button>
+  
+    </ion-buttons>
+ 
+    <ion-title  >
+      DashBoard
+    </ion-title>
+
+
+  </ion-toolbar >
+
+
+  <div style="min-height: 150px!important; background: rgb(90, 115, 228);"  >
+      <ion-label class="main-titlepage">ACCOUNT BALANCE  </ion-label>
+      <ion-label class="BalanceNum">RM 00.0 </ion-label>
+  
+  </div>
+  <br>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="Voucher" (click)="showVoucher()">
+      <ion-icon name="flash"></ion-icon>
+      <ion-label>Voucher</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="Transition History"  (click)="showTransition()" >
+      <ion-icon name="apps"></ion-icon>
+      <ion-label>Transition History</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>
+
+</ion-header>
+
+<ion-content >
+    <ion-content *ngIf="!tabsinfo" >
+
+      <p text-center> graph here </p>
+
+    </ion-content>
+
+<ion-content  *ngIf="tabsinfo">
+
+    <ion-card>
+        <ion-item >
+            <ion-icon class="icon1" [name]="transition.icon" slot="start"></ion-icon>
+            <ion-label text-wrap>
+            <ion-text class="title" color="primary">
+              <p class="title" >{{transition.title}}</p>
+            </ion-text>
+            <p class="messagetext">{{transition.date}}</p>
+           
+          </ion-label>
+            
+            <div  class="item-note " slot="end">
+              <ion-icon [name]="transition.icon2" ></ion-icon>
+              {{transition.amount}}
+            </div>
+
+          </ion-item >
+    </ion-card>
+
+    </ion-content> 
+</ion-content>
+

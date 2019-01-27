@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo, TodoService } from '../services/todo.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-addcupon',
@@ -16,7 +17,7 @@ todo: Todo = {
 };
 
 todoId = null;
-  constructor(private todoService: TodoService, private route: ActivatedRoute) { }
+  constructor(private todoService: TodoService, private route: ActivatedRoute, private authservice: AuthService) { }
 
   ngOnInit() {
 
@@ -45,5 +46,10 @@ todoId = null;
        });
     }
   }
+
+  signOut() {
+    this.authservice.signOut();
+  }
+
 
 }

@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { RetailerregPage } from './retailerreg.page';
 
+import { LocationSelectPage } from '../location-select/location-select.page';
+
 const routes: Routes = [
   {
     path: '',

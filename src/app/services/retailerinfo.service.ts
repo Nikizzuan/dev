@@ -3,27 +3,44 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 export interface Userinfo {
   userName: string;
+  storeName: string;
   matricNum: string;
   email: string;
   usertype: string;
   storeAdress: string;
+  University: string;
+  UniversirtyPoint: number;
+  myeventplaner: string;
+  myqrplaner: string;
+  StoreLocid: string;
+  eWallet: number;
+  academicYear: string;
+
 }
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class RetailerinfoService {
 
+userID: any;
+// modal: any;
+userauth: Observable<firebase.User>;
+authState: any = null;
+
 
   private userCollections: AngularFirestoreCollection<Userinfo>;
 
   private user: Observable<Userinfo[]>;
 
-  constructor(db: AngularFirestore, private authservice: AuthService) {
+  constructor(db: AngularFirestore, private authservice: AuthService, private afAuth: AngularFireAuth) {
 
     this.userCollections = db.collection<Userinfo>('UserInfo');
 
@@ -37,6 +54,12 @@ export class RetailerinfoService {
     })
     );
   }
+
+  /* this how u get array
+  this.servicename.functionname().subscribe( res => {
+    this.yourarray = res;
+  });
+  */
 
 
   getUsers() {
@@ -58,5 +81,18 @@ export class RetailerinfoService {
   removeUser(id) {
     return this.userCollections.doc(id).delete();
   }
+
+
+  getUserbycurrentid() {
+    this.userauth = this.afAuth.authState;
+
+    this.afAuth.auth.onAuthStateChanged(user =>  {
+
+        return this.userCollections.doc<Userinfo>(user.uid).valueChanges();
+
+    });
+
+   }
+
 
 }

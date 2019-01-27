@@ -1,41 +1,57 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>retailerreg</ion-title>
+    <ion-title>retailer registrasion</ion-title>
+    <ion-buttons  *ngIf="tabsinfo" slot="end">
+        <ion-button  (click)="saveUser()">
+         Register
+         </ion-button>
+      
+        </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar  *ngIf="tabsinfo">
+    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<style>
+    #map {
+      height: 100%;
+    }
+  </style>
+
+<ion-content >
 
   <ion-content *ngIf="!tabsinfo">
       <ion-list lines="full">
 
           <ion-item>
-            <ion-label fixed>Cupon Name</ion-label>
+            <ion-label fixed>Your Name</ion-label>
             <ion-input type="text" [(ngModel)]="user.userName"></ion-input>
           </ion-item>
         
           <ion-item>
             <ion-label fixed>identification number</ion-label>
-            <ion-input type="text" [(ngModel)]="user.matricNum"></ion-input>
+            <ion-input type="Number" [(ngModel)]="user.matricNum"></ion-input>
           </ion-item>
-        
-        </ion-list>
-      <ion-button expand="full" (click)="Nextface()">Next</ion-button>
-  </ion-content>
-
-  <ion-content *ngIf="tabsinfo">
-
-
-      <ion-list lines="full">
 
           <ion-item>
-            <ion-label fixed>adress</ion-label>
-            <ion-input type="text" [(ngModel)]="user.storeAdress"></ion-input>
+            <ion-label fixed>Store Name</ion-label>
+            <ion-input type="text" [(ngModel)]="user.storeName"></ion-input>
           </ion-item>
         
-        
         </ion-list>
-      <ion-button expand="full" (click)="saveUser()">save</ion-button>
+      <ion-button expand="full" (click)="Nextface()">Set Your Store Location</ion-button>
+  </ion-content>
+
+  <ion-content >
+
+
+    <ion-list [hidden]="autocompleteItems.length == 0">
+      <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+        {{ item.description }}
+      </ion-item>
+    </ion-list>
+  <div id='map'></div>
 
 
   </ion-content>

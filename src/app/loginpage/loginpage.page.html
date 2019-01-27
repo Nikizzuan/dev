@@ -1,12 +1,38 @@
-<ion-header *ngIf="(user | async) || {} as user">
-  <ion-toolbar>
-    <ion-title>loginpage</ion-title>
-  </ion-toolbar>
-</ion-header>
+<style>
+.myview{
+    background-image:url('https://bernardmarr.com/img/Measuring%20Staff%20Satisfaction%207%20Reasons%20Why%20Your%20Staff%20Survey%20Is%20Not%20Giving%20You%20Anything%20Useful.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
 
-<ion-content >
+.no-scroll{
+    overflow: hidden;
+}
+
+
+.lg-button{
+    padding-left: 50%;
+    padding-top: 130%;
   
-<app-google-login></app-google-login>
+}
+
+.test{
+
+    margin-left: auto; 
+    margin-right: auto
+}
+
+
+
+</style>
+<ion-content class="myview" >
+  
+  
+ 
+ <app-google-login class="test"></app-google-login>
+    
+
     
 
 </ion-content>

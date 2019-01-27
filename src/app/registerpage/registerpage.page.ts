@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-registerpage',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterpagePage implements OnInit {
 
-  constructor() { }
+  constructor(public navCtrl: NavController) { }
 
   ngOnInit() {
+
+  }
+
+
+  regStudent() {
+    this.navCtrl.navigateForward('studentreg');
+  }
+
+  regStaff() {
+    this.navCtrl.navigateForward('staffreg');
+  }
+
+  regRetailer() {
+    this.navCtrl.navigateForward('retailerreg');
   }
 
 }
