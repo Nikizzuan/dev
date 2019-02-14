@@ -34,7 +34,7 @@ markers: any[];
     // Set latitude and longitude of some place
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 5.355933, lng: 100.302518 },
-      zoom: 17
+      zoom: 15
     });
     this.clearMarkers();
     // set marker
@@ -74,6 +74,8 @@ markers: any[];
         };
         const marker = new google.maps.Marker({
           position: results[0].geometry.location,
+          icon: { url : '../assets/img/food.svg' },
+          animation: google.maps.Animation.BOUNCE,
           map: this.map,
         });
         console.log(marker);

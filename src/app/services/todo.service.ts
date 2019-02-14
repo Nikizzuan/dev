@@ -7,10 +7,16 @@ import { map } from 'rxjs/operators';
 // cupon is todo
 export interface Todo {
   CuponName: string;
-  Expiredate: number;
-//  Cuponbackground: ImageBitmap;
-//  CuponId: number;
+  Retailer: string;
+  Expiredate: string;
+  CupponType: string;
+  Amountalocate: number;
+  CupponNum: number;
+  ItemList: any;
+  discount: number;
+  Term: string;
   CreatedAt: number;
+  usersCouponID: any;
 }
 
 @Injectable({

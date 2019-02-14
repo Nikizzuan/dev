@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-title *ngIf="!prductId">Add Product</ion-title>
+    <ion-title *ngIf="prductId">Edit Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list lines="full">
+
+    <ion-item>
+      
+      
+    </ion-item>
+    <ion-img [src]="Product.img" ></ion-img>
+    <button ion-button icon-only (click)="pickImage()">
+      <ion-icon name="camera"></ion-icon>
+    </button>
+    <ion-item>
+ 
+      <ion-input type="text" [(ngModel)]="Product.title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="textarea" [(ngModel)]="Product.Description"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label fixed>RM : </ion-label>
+      <ion-input type="number" [(ngModel)]="Product.price"></ion-input>
+    </ion-item>
+  
+  </ion-list>
+<ion-button expand="full" (click)="saveProduct()"  *ngIf="!prductId">Add Product</ion-button>
+<ion-button expand="full" (click)="saveProduct()" *ngIf="prductId" >Confirm Edit</ion-button>
+</ion-content>

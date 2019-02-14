@@ -25,32 +25,32 @@ export class AppComponent implements OnInit {
     {
       title: 'Profile',
       url: '/profile',
-      icon: 'list'
+      icon: 'person'
     },
     {
       title: 'Store',
       url: '/cuponstore',
-      icon: 'list'
+      icon: 'cart'
     },
     {
       title: 'QrPay',
       url: '/qr-pay',
-      icon: 'list'
+      icon: 'basket'
     },
     {
       title: 'Donation',
       url: '/donation',
-      icon: 'list'
+      icon: 'wallet'
     },
     {
       title: 'Merchant Outlet',
       url: '/merchant-outlet',
-      icon: 'list'
+      icon: 'map'
     },
     {
       title: 'Notification',
       url: '/list',
-      icon: 'list'
+      icon: 'notifications'
     }
   ];
 
@@ -64,32 +64,33 @@ export class AppComponent implements OnInit {
     {
       title: 'Profile',
       url: '/profile',
-      icon: 'list'
+      icon: 'person'
     },
     {
       title: 'Add Coupon',
       url: '/addcupon',
-      icon: 'list'
+      icon: 'add-circle-outline'
+    
     },
     {
       title: 'Manage Product',
       url: '/productmanagement',
-      icon: 'list'
+      icon: 'cog'
     },
     {
       title: 'Donation',
       url: '/donation',
-      icon: 'list'
+      icon: 'wallet'
     },
     {
       title: 'E-wallet Redemtaion',
       url: '/redemtaion',
-      icon: 'list'
+      icon: 'cash'
     },
     {
       title: 'Notification',
       url: '/list',
-      icon: 'list'
+      icon: 'notifications'
     }
   ];
 

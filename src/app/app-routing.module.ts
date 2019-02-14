@@ -31,7 +31,11 @@ const routes: Routes = [
   { path: 'LocationSelect', loadChildren: './location-select/location-select.module#LocationSelectPageModule' },
   { path: 'retailerhomepage', loadChildren: './retailerhomepage/retailerhomepage.module#RetailerhomepagePageModule' },
   { path: 'productmanagement', loadChildren: './productmanagement/productmanagement.module#ProductmanagementPageModule' },
-  { path: 'redemtaion', loadChildren: './redemtaion/redemtaion.module#RedemtaionPageModule' }
+  { path: 'redemtaion', loadChildren: './redemtaion/redemtaion.module#RedemtaionPageModule' },
+  { path: 'addproduct', loadChildren: './addproduct/addproduct.module#AddproductPageModule' },
+  { path: 'addproduct/:id', loadChildren: './addproduct/addproduct.module#AddproductPageModule' },
+  { path: 'viewcupon/:id/:usercoupon', loadChildren: './viewcupon/viewcupon.module#ViewcuponPageModule' }
+
 
 ];
 

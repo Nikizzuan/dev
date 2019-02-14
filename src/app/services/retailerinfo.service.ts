@@ -31,6 +31,7 @@ export interface Userinfo {
 export class RetailerinfoService {
 
 userID: any;
+usercurr: any
 // modal: any;
 userauth: Observable<firebase.User>;
 authState: any = null;
@@ -85,14 +86,16 @@ authState: any = null;
 
   getUserbycurrentid() {
     this.userauth = this.afAuth.authState;
+    
 
     this.afAuth.auth.onAuthStateChanged(user =>  {
 
-        return this.userCollections.doc<Userinfo>(user.uid).valueChanges();
+      this.usercurr = this.userCollections.doc<Userinfo>(user.uid).valueChanges();
 
     });
-
+    return this.usercurr
    }
 
 
 }
+  

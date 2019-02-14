@@ -21,6 +21,7 @@ export class AuthService  {
 
   user: Observable<firebase.User>;
   authState: any = null;
+   userid: any 
 
  constructor(
     private afAuth: AngularFireAuth,
@@ -61,6 +62,18 @@ export class AuthService  {
   // Returns current user UID
   get currentUserId(): string {
     return this.authenticated ? this.authState.uid : '';
+  }
+
+  get currentUserId2(): string {
+    this.user = this.afAuth.authState;
+    
+    this.afAuth.auth.onAuthStateChanged(user =>  {
+
+      this.userid = user.uid;
+
+    });
+
+    return  this.userid ;
   }
 
   get currentUserEmail(): string {

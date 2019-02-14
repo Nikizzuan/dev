@@ -89,7 +89,7 @@
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="Voucher" (click)="showVoucher()">
       <ion-icon name="flash"></ion-icon>
-      <ion-label>Voucher</ion-label>
+      <ion-label>Graph</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="Transition History"  (click)="showTransition()" >
       <ion-icon name="apps"></ion-icon>
@@ -105,6 +105,14 @@
     <ion-content *ngIf="!tabsinfo" >
 
       <p text-center> graph here </p>
+      <ion-card >
+        <ion-card-header>
+          Analytics
+        </ion-card-header>
+        <ion-card-content>
+          <canvas #valueBarsCanvas></canvas>
+        </ion-card-content>
+      </ion-card>
 
     </ion-content>
 
@@ -117,7 +125,7 @@
             <ion-text class="title" color="primary">
               <p class="title" >{{transition.title}}</p>
             </ion-text>
-            <p class="messagetext">{{transition.date}}</p>
+            <p class="messagetext">{{transition.date  | date:'short' }}</p>
            
           </ion-label>
             

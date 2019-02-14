@@ -1,0 +1,114 @@
+
+<ion-header >
+    <ion-toolbar color ="primary">
+      
+
+      <ion-buttons slot="end">
+      <ion-button  (click)="back()">
+       Back
+       </ion-button>
+    
+      </ion-buttons>
+   
+      <ion-title   >
+        View Cuppon  
+       
+      </ion-title>
+  
+  
+    </ion-toolbar >
+  
+  
+  </ion-header>
+<ion-content >
+    <ion-col>
+        <div text-center>
+            <ion-list lines="full">
+           <ion-item >
+             <p>
+            <sub >Cuppon title : </sub>
+            <sub >{{todo.CuponName}}</sub>
+            </p>
+          </ion-item>
+
+          <ion-item >
+              <p>
+             <sub >Retailer : </sub>
+             <sub >{{todo.Retailer}}</sub>
+             </p>
+           </ion-item>
+
+
+          <ion-item >
+              <p>
+             <sub >Amount alocate : </sub>
+             <sub >RM {{todo.Amountalocate}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item >
+              <p>
+             <sub >expiry date : </sub>
+             <sub >{{todo.Expiredate | date:'short'}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item >
+              <p>
+             <sub >List of Item eligable : </sub>
+             
+
+             <ion-list>
+              <ion-item *ngFor="let item of todo.ItemList">
+                  <ion-label>{{item.title}}</ion-label>
+                  
+                  <ion-label>{{item.Description}}</ion-label>
+              </ion-item>
+            </ion-list>
+
+         
+             
+             </p>
+           </ion-item>
+
+
+           <ion-item >
+              <p>
+             <sub >Item discount : </sub>
+             <sub >{{todo.discount}}%</sub>
+            
+             </p>
+           </ion-item>
+
+           
+           <ion-item >
+              <p>
+             <sub >term and condition : </sub>
+             <sub >{{todo.Term}}</sub>
+             </p>
+           </ion-item>
+
+           <ion-item *ngIf="!usercoupon">
+              <p>
+             <sub >Cuppon remain : </sub>
+             <sub >{{todo.CupponNum}}</sub>
+             </p>
+           </ion-item>
+
+
+
+
+           
+          </ion-list>
+          </div>   
+          
+          <ion-button expand="full" (click)="saveTodo()" *ngIf="!usercoupon">
+            Purchase Coupon Now
+          </ion-button>
+          <ion-button expand="full" (click)="use()"*ngIf="usercoupon" >
+            Use Coupon 
+          </ion-button>
+    </ion-col>
+
+
+</ion-content>

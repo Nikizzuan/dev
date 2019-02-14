@@ -1,1 +1,52 @@
+:host {
 
+
+    .card-background-page {
+    
+        ion-card {
+          position: relative;
+          text-align: center;
+        }
+      
+        .card-title {
+          position: absolute;
+          top: 10%;
+          
+          font-size: 1.3em;
+          width: 100%;
+          font-weight: bold;
+          color: #fff;
+        }
+        .card-amount {
+            position: absolute;
+            top: 30%;
+            font-size: 4.0em;
+            width: 100%;
+            font-weight: bold;
+            color: #fff;
+          }
+    
+          .icon-buy{
+            background: url(https://icons-for-free.com/free-icons/png/512/2400502.png) no-repeat;
+            position: absolute;
+            top: 36%;
+            left: 20%;
+            width: 16px;
+            height: 16px;
+            border: none;
+         
+            
+         }
+      
+        .card-subtitle {
+          font-size: 1.0em;
+          position: absolute;
+          left: 22%;
+          top: 69%;
+          width: 100%;
+          color: #fff;
+        }
+      
+      }
+    
+    }

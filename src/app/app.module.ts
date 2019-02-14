@@ -23,6 +23,11 @@ import { Network } from '@ionic-native/network';
 import { ConnectivityServiceService } from '../app/services/connectivity-service.service';
 import { GoogleMapsService } from '../app/services/google-maps.service';
 import { LocationSelectPageModule } from '../app/location-select/location-select.module';
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
+
+
 
 @NgModule({
   declarations: [AppComponent, MapslocaterComponent],
@@ -42,6 +47,9 @@ import { LocationSelectPageModule } from '../app/location-select/location-select
   providers: [
     StatusBar,
     Geolocation,
+    Camera,
+    File,
+    DatePicker,
   // Network,
    // ConnectivityServiceService,
  //   GoogleMapsService,
