@@ -3,6 +3,10 @@ import { AuthService } from '../services/auth.service';
 import { Chart } from 'chart.js';
 import { ToastController } from '@ionic/angular/dist/providers/toast-controller';
 import { Observable } from 'rxjs';
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { FcmService } from '../services/fcm.service';
 
 @Component({
   selector: 'app-retailerhomepage',
@@ -13,7 +17,7 @@ export class RetailerhomepagePage implements OnInit {
   tabsinfo: any;
 
   data: Observable<any[]>;
-  
+
 
   transition:  any = {
     icon: 'arrow-round-down',
@@ -36,7 +40,7 @@ transaction = {
   value: 0,
   expense: false,
   month: 0
-}
+};
 
  @ViewChild('valueBarsCanvas') valueBarsCanvas;
  valueBarsChart: any;
@@ -44,16 +48,51 @@ transaction = {
  chartData = null;
 
   constructor(private authservice: AuthService,
-    private toastCtrl: ToastController) { }
+    private toastCtrl: ToastController,
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private fcm: FcmService,
+    ) {
+      this.initializeApp();
+     }
+
+     private async presentToast(message) {
+      const toast = await this.toastCtrl.create({
+        message,
+        duration: 3000
+      });
+      toast.present();
+    }
+
+    private notificationSetup() {
+      this.fcm.getToken();
+      this.fcm.onNotifications().subscribe(
+        (msg) => {
+          if (this.platform.is('ios')) {
+            this.presentToast(msg.aps.alert);
+          } else {
+            this.presentToast(msg.body);
+          }
+        });
+    }
+
+    initializeApp() {
+      this.platform.ready().then(() => {
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+        this.notificationSetup();
+      });
+    }
 
   ngOnInit() {
 
         // Reference to our Firebase List
   //      this.ref = this.db.list('transactions', ref => ref.orderByChild('month'));
- 
+
         // Catch any update to draw the Chart
-       
-            this.createCharts(this.transaction)
+
+         //   this.createCharts(this.transaction);
 
   }
 
@@ -72,10 +111,10 @@ this. tabsinfo = 1;
 
       createCharts(data) {
         this.chartData = data;
-       
+
         // Calculate Values for the Chart
-        let chartData = this.getReportValues();
-       
+        const chartData = this.getReportValues();
+
         // Create the chart
         this.valueBarsChart = new Chart(this.valueBarsCanvas.nativeElement, {
           type: 'bar',
@@ -92,8 +131,9 @@ this. tabsinfo = 1;
             },
             tooltips: {
               callbacks: {
+                // tslint:disable-next-line:no-shadowed-variable
                 label: function (tooltipItems, data) {
-                  return data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] +' $';
+                  return data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] + ' $';
                 }
               }
             },
@@ -117,14 +157,14 @@ this. tabsinfo = 1;
       }
 
       getReportValues() {
-        let reportByMonth = {
+        const reportByMonth = {
           0: null,
           1: null,
           2: null,
           3: null
         };
-       
-        for (let trans of this.chartData) {
+
+        for (const trans of this.chartData) {
           if (reportByMonth[trans.month]) {
             if (trans.expense) {
               reportByMonth[trans.month] -= +trans.value;
@@ -141,6 +181,6 @@ this. tabsinfo = 1;
         }
         return Object.keys(reportByMonth).map(a => reportByMonth[a]);
       }
-      
+
 
 }

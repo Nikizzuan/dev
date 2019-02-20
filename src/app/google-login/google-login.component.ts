@@ -30,8 +30,9 @@ export class GoogleLoginComponent {
   }
 
   googleLogin() {
+
     if (this.platform.is('cordova')) {
-      this.nativeGoogleLogin();
+/*
       this.userauth = this.afAuth.authState;
 
       this.afAuth.auth.onAuthStateChanged(user =>  {
@@ -42,6 +43,9 @@ export class GoogleLoginComponent {
 
         }
       });
+       */
+
+
     } else {
       this.webGoogleLogin();
       this.userauth = this.afAuth.authState;
@@ -54,7 +58,10 @@ export class GoogleLoginComponent {
         }
       });
     }
+
   }
+
+
 
   async nativeGoogleLogin(): Promise<void> {
     try {
@@ -76,6 +83,21 @@ export class GoogleLoginComponent {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const credential = await this.afAuth.auth.signInWithPopup(provider);
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async googleLogin2(): Promise<void> {
+    try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return await this.afAuth.auth.signInWithPopup(provider)
+    .then((credential) =>  {
+      this.authState = credential.user;
+      this.loadUser();
+     // this.updateUserData();
+  });
 
     } catch (err) {
       console.log(err);

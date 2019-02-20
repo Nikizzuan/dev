@@ -45,7 +45,7 @@ export class HomePage implements OnInit {
   StoreLocid: '',
   eWallet: 0,
   academicYear: ''
- }
+ };
  userId = null;
  // for userauth
 userauth: Observable<firebase.User>;
@@ -53,7 +53,7 @@ authState: any = null;
 
 
   constructor(private todoService: TodoService,
-  private router: Router, 
+  private router: Router,
   private authservice: AuthService,
   private userservice: RetailerinfoService,
   private afAuth: AngularFireAuth,
@@ -66,46 +66,38 @@ authState: any = null;
     this.userauth = this.afAuth.authState;
 
     this.afAuth.auth.onAuthStateChanged(user =>  {
-      this.userId = user.uid
+      this.userId = user.uid;
       if (this.userId) {
         this.loadTodo();
       }
     });
-     
 
-  
- 
- 
-       
+
        this.todoService.getTodos().subscribe( res => {
- 
+
            let index2 = 0;
          for (let index = 0; index < res.length ; index++) {
-           
 
-            
           for (let index3 = 0; index3 < res[index].usersCouponID.length ; index3++) {
-             if (res[index].usersCouponID[index3] === this.userId){
+             if (res[index].usersCouponID[index3] === this.userId) {
               this.viewArray[index2] = res[index];
               index2 = index2 + 1;
 
              }
-           
+
           }
-          
-         
-           
+
          }
- 
-       });
- 
+
+      });
+
 
   }
 
   loadTodo() {
     this.userservice.getUser(this.userId).subscribe( res => {
       this.userinfos = res;
-    
+
     });
   }
 

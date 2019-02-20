@@ -26,7 +26,7 @@ import { LocationSelectPageModule } from '../app/location-select/location-select
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
-
+import { Firebase } from '@ionic-native/firebase/ngx';
 
 
 @NgModule({
@@ -50,6 +50,7 @@ import { DatePicker } from '@ionic-native/date-picker/ngx';
     Camera,
     File,
     DatePicker,
+    Firebase,
   // Network,
    // ConnectivityServiceService,
  //   GoogleMapsService,
