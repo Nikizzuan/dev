@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { RetailerinfoService, Userinfo } from '../services/retailerinfo.service';
+import { Transaction, TransactionService } from '../services/transaction.service';
 // import { loginpage } from  './loginpage/loginpage.page'
 // test for surface pro
 @Component({
@@ -20,17 +21,22 @@ export class HomePage implements OnInit {
   tabsinfo: any;
   usercheck: any;
 
-  transition:  any = {
-    icon: 'arrow-round-down',
-    icon2: 'remove',
-    title: 'Food and beverages',
-    amount: '07.00',
+  transaction:  Transaction = {
+    icon: '',
+    icon2: '',
+    title: '',
+    amount: 0,
     date: Date.now(),
-    color: 'red'
+    color: 'red',
+    expense:  null,
+    month: ''
 
  };
 
+ alltransaction: Transaction[];
+
  viewArray: Todo[] = [];
+
  userinfos: Userinfo = {
   userName: '',
   matricNum: '',
@@ -54,6 +60,7 @@ authState: any = null;
 
   constructor(private todoService: TodoService,
   private router: Router,
+  private transcationservice : TransactionService,
   private authservice: AuthService,
   private userservice: RetailerinfoService,
   private afAuth: AngularFireAuth,
@@ -62,6 +69,8 @@ authState: any = null;
       this.tabsinfo = null; }
 
   ngOnInit() {
+
+    this.loadtranscation()
 
     this.userauth = this.afAuth.authState;
 
@@ -101,6 +110,14 @@ authState: any = null;
     });
   }
 
+  loadtranscation(){
+
+    this.transcationservice.gettransactions().subscribe( res => {
+      this.alltransaction = res;
+    });
+
+  }
+
   remove(item) {
     this.todoService.removeTodo(item.id);
     /* if (this.afAuth.auth.onAuthStateChanged) {
@@ -112,6 +129,7 @@ authState: any = null;
   signOut() {
     this.authservice.signOut();
   }
+  
 
 
   showTransition() {

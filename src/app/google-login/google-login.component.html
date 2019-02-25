@@ -6,10 +6,27 @@ padding-top: 120%;
 }
 </style>
 <ion-content  *ngIf="(user | async) || {} as user">
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
         <ion-col>
                 <div text-center>
                     
-<ion-button size='small' class="test" *ngIf="!user.uid" (click)="googleLogin()">Google Login</ion-button>
+<ion-button size='small'  *ngIf="!user.uid" (click)="googleLogin()">Google Login</ion-button>
 
                 </div>      
         </ion-col>
@@ -35,7 +52,7 @@ padding-top: 120%;
         <ion-col>
                 <div text-center>
                     
-                        <ion-label style="color:white;" text-center>Welcome back, {{ user.displayName }}</ion-label>
+                        <ion-label style="color:white;" text-center>Welcome, {{ user.displayName }}</ion-label>
               </div>      
         </ion-col>
         

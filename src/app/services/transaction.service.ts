@@ -9,7 +9,7 @@ export interface Transaction {
   icon2: string;
   title: string;
   amount: number;
-  date: string;
+  date: number;
   color: string;
   expense:  boolean;
   month: string;
