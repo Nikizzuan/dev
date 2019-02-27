@@ -132,20 +132,20 @@
 
 
 <ion-content  *ngIf="tabsinfo">
-    <ion-card>
+    <ion-card *ngFor="let item of alltransaction">
         <ion-item >
-            <ion-icon class="icon1" [name]="transition.icon" slot="start"></ion-icon>
+            <ion-icon class="icon1" [name]="item.icon" slot="start"></ion-icon>
             <ion-label text-wrap>
             <ion-text class="title" color="primary">
-              <p class="title" >{{transition.title}}</p>
+              <p class="title" >{{item.title}}</p>
             </ion-text>
-            <p class="messagetext">{{transition.date  | date:'short' }}</p>
+            <p class="messagetext">{{item.date  | date:'short' }}</p>
            
           </ion-label>
             
             <div  class="item-note " slot="end">
-              <ion-icon [name]="transition.icon2" ></ion-icon>
-              {{transition.amount}}
+              <ion-icon [name]="item.icon2" ></ion-icon>
+              {{item.amount}}
             </div>
 
           </ion-item >
