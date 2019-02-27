@@ -14,17 +14,17 @@ import { NavController } from '@ionic/angular';
 export class StudentregPage implements OnInit {
 
   user: Userinfo = {
-    userName: '',
+    userName: 'null',
     matricNum: '123456',
     email: 'example@Student.usm.my',
     usertype: 'Student',
     storeAdress: 'null',
-    storeName: '',
+    storeName: 'null',
     University: 'Universiti Sains Malaysia',
     UniversirtyPoint: 0,
     myeventplaner: 'null',
     myqrplaner: 'true',
-    StoreLocid: '',
+    StoreLocid: 'null',
     eWallet: 0,
     academicYear: '1'
 };
@@ -60,11 +60,11 @@ authState: any = null;
   }
 
 
-  saveUser() {
-   // this.user.email = this.authservice.currentUserEmail;
-    this.userservice.addUser(this.user).then(() => {
-    });
-    this.navCtrl.navigateForward('home');
+    saveUser() {
+    // this.user.email = this.authservice.currentUserEmail;
+      this.userservice.addUser(this.user).then(() => {
+      });
+      this.navCtrl.navigateForward('home');
     /* if (this.userID) {
       this.userservice.UpdateUser(this.user, this.userID).then(() => {
       });

@@ -23,13 +23,14 @@
     "@ionic-native/camera": "^5.0.0",
     "@ionic-native/core": "^5.0.0-beta.24",
     "@ionic-native/date-picker": "^5.0.0",
+    "@ionic-native/fcm": "^5.2.0",
     "@ionic-native/file": "^5.0.0",
     "@ionic-native/file-path": "^5.0.0",
     "@ionic-native/firebase": "^5.0.0-beta.1",
     "@ionic-native/firebase-authentication": "^4.19.0",
     "@ionic-native/geolocation": "^5.0.0-beta.24",
     "@ionic-native/google-maps": "^5.0.0-beta.25",
-    "@ionic-native/google-plus": "^5.0.0-beta.14",
+    "@ionic-native/google-plus": "^5.2.0",
     "@ionic-native/ionic-webview": "^5.0.0",
     "@ionic-native/native-geocoder": "^5.0.0-beta.24",
     "@ionic-native/network": "^4.20.0",
@@ -47,6 +48,7 @@
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-fcm-with-dependecy-updated": "2.4.0",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-firebase": "2.0.5",
     "cordova-plugin-firebase-authentication": "^1.0.1",
@@ -105,8 +107,9 @@
         "FIREBASE_AUTH_VERSION": "version"
       },
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.415399973733-9g5vkks81bp20g8vt2onj50bo4bpi8n7",
-        "PLAY_SERVICES_VERSION": "11.8.0"
+        "REVERSED_CLIENT_ID": "myreversedclientid",
+        "WEB_APPLICATION_CLIENT_ID": "mywebapplicationclientid",
+        "PLAY_SERVICES_VERSION": "15.0.1"
       },
       "cordova-plugin-nativegeocoder": {},
       "cordova-plugin-whitelist": {},
@@ -123,7 +126,8 @@
       },
       "cordova-plugin-camera": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-datepicker": {}
+      "cordova-plugin-datepicker": {},
+      "cordova-plugin-fcm-with-dependecy-updated": {}
     },
     "platforms": [
       "android"

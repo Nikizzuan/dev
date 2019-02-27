@@ -54,36 +54,9 @@ transaction = {
     private statusBar: StatusBar,
     private fcm: FcmService,
     ) {
-      this.initializeApp();
+   // this.initializeApp();
      }
 
-     private async presentToast(message) {
-      const toast = await this.toastCtrl.create({
-        message,
-        duration: 3000
-      });
-      toast.present();
-    }
-
-    private notificationSetup() {
-      this.fcm.getToken();
-      this.fcm.onNotifications().subscribe(
-        (msg) => {
-          if (this.platform.is('ios')) {
-            this.presentToast(msg.aps.alert);
-          } else {
-            this.presentToast(msg.body);
-          }
-        });
-    }
-
-    initializeApp() {
-      this.platform.ready().then(() => {
-        this.statusBar.styleDefault();
-        this.splashScreen.hide();
-        this.notificationSetup();
-      });
-    }
 
   ngOnInit() {
 

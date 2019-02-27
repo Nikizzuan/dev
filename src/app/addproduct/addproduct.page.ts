@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductserviceService } from '../services/productservice.service';
 import { ActivatedRoute } from '@angular/router';
-import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
-import { File } from "@ionic-native/file/ngx";
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 // FIREBASE
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 import { RetailerinfoService } from '../services/retailerinfo.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
@@ -35,8 +35,8 @@ authState: any = null;
  prductId = null;
 
   constructor( private route: ActivatedRoute,
-     private productService: ProductserviceService, 
-     public camera: Camera, 
+     private productService: ProductserviceService,
+     public camera: Camera,
      private file: File,
      private userservice: RetailerinfoService,
     private afAuth: AngularFireAuth) { }
@@ -69,7 +69,7 @@ authState: any = null;
 
   }
 
-  
+
   loadProduct() {
     this.productService.getProduct(this.prductId).subscribe( res => {
       this.Product = res;
@@ -89,7 +89,7 @@ authState: any = null;
   }
 
 
-  // camera 
+  // camera
 
   async pickImage() {
     const options: CameraOptions = {
@@ -99,14 +99,14 @@ authState: any = null;
       mediaType: this.camera.MediaType.PICTURE
     };
     try {
-      let cameraInfo = await this.camera.getPicture(options);
-      let blobInfo = await this.makeFileIntoBlob(cameraInfo);
-      let uploadInfo: any = await this.uploadToFirebase(blobInfo);
+      const cameraInfo = await this.camera.getPicture(options);
+      const blobInfo = await this.makeFileIntoBlob(cameraInfo);
+      const uploadInfo: any = await this.uploadToFirebase(blobInfo);
 
-      alert("File Upload Success " + uploadInfo.fileName);
+      alert('File Upload Success ' + uploadInfo.fileName);
     } catch (e) {
       console.log(e.message);
-      alert("File Upload Error " + e.message);
+      alert('File Upload Error ' + e.message);
     }
   }
 
@@ -114,27 +114,27 @@ authState: any = null;
     makeFileIntoBlob(_imagePath) {
       // INSTALL PLUGIN - cordova plugin add cordova-plugin-file
       return new Promise((resolve, reject) => {
-        let fileName = "";
+        let fileName = '';
         this.file
           .resolveLocalFilesystemUrl(_imagePath)
           .then(fileEntry => {
-            let { name, nativeURL } = fileEntry;
-  
+            const { name, nativeURL } = fileEntry;
+
             // get the path..
-            let path = nativeURL.substring(0, nativeURL.lastIndexOf("/"));
-            console.log("path", path);
-            console.log("fileName", name);
-  
+            const path = nativeURL.substring(0, nativeURL.lastIndexOf('/'));
+            console.log('path', path);
+            console.log('fileName', name);
+
             fileName = name;
-  
+
             // we are provided the name, so now read the file into
             // a buffer
             return this.file.readAsArrayBuffer(path, name);
           })
           .then(buffer => {
             // get the buffer and make a blob to be saved
-            let imgBlob = new Blob([buffer], {
-              type: "image/jpeg"
+            const imgBlob = new Blob([buffer], {
+              type: 'image/jpeg'
             });
             console.log(imgBlob.type, imgBlob.size);
             resolve({
@@ -151,20 +151,20 @@ authState: any = null;
    * @param _imageBlobInfo
    */
   uploadToFirebase(_imageBlobInfo) {
-    console.log("uploadToFirebase");
+    console.log('uploadToFirebase');
     return new Promise((resolve, reject) => {
-      let fileRef = firebase.storage().ref("images/" + _imageBlobInfo.fileName);
+      const fileRef = firebase.storage().ref('images/' + _imageBlobInfo.fileName);
 
       // save path to firestore
-      this.Product.img = "images/" + _imageBlobInfo.fileName;
+      this.Product.img = 'images/' + _imageBlobInfo.fileName;
 
-      let uploadTask = fileRef.put(_imageBlobInfo.imgBlob);
+      const uploadTask = fileRef.put(_imageBlobInfo.imgBlob);
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         (_snapshot: any) => {
           console.log(
-            "snapshot progess " +
+            'snapshot progess ' +
               (_snapshot.bytesTransferred / _snapshot.totalBytes) * 100
           );
         },

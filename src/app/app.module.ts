@@ -27,7 +27,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { Firebase } from '@ionic-native/firebase/ngx';
-
+import { FCM } from '@ionic-native/fcm/ngx';
 
 @NgModule({
   declarations: [AppComponent, MapslocaterComponent],
@@ -51,6 +51,7 @@ import { Firebase } from '@ionic-native/firebase/ngx';
     File,
     DatePicker,
     Firebase,
+    FCM,
   // Network,
    // ConnectivityServiceService,
  //   GoogleMapsService,

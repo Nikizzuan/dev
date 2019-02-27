@@ -8,6 +8,14 @@ import { RetailerinfoService } from './services/retailerinfo.service';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { FCM } from '@ionic-native/fcm/ngx';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { ToastController } from '@ionic/angular/dist/providers/toast-controller';
+
+
+import { Subject } from 'rxjs/Subject';
+import { FcmService } from './services/fcm.service';
 
 @Component({
   selector: 'app-root',
@@ -70,7 +78,7 @@ export class AppComponent implements OnInit {
       title: 'Add Coupon',
       url: '/addcupon',
       icon: 'add-circle-outline'
-    
+
     },
     {
       title: 'Manage Product',
@@ -107,7 +115,11 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private authservice: AuthService,
     private afAuth: AngularFireAuth,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    private fcm: FCM,
+    private fcm2: FcmService,
+    private toastCtrl: ToastController,
+    private router: Router
   ) {
   //
     this.initializeApp();
@@ -133,7 +145,47 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      // fcm
+
+      this.fcm2.getToken();
+      this.fcm.onNotification().subscribe(data => {
+        console.log(data);
+        this.presentToast(data);
+        if (data.wasTapped) {
+          console.log('Received in background');
+          this.router.navigate([data.landing_page, data.price]);
+        } else {
+          console.log('Received in foreground');
+          this.router.navigate([data.landing_page, data.price]);
+        }
+      });
+
+
     });
+
+    this.fcm.getToken().then(token => {
+      console.log(token);
+    });
+  }
+
+
+  private async presentToast(message) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  refrestoken() {
+    this.fcm.onTokenRefresh().subscribe(token => {
+      console.log(token);
+    });
+  }
+
+  pushnotification() {
+
   }
 
   loadUser() {

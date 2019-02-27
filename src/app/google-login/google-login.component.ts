@@ -6,6 +6,7 @@ import { Platform, NavController } from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../services/auth.service';
 import { RetailerinfoService } from '../services/retailerinfo.service';
+import { ToastController } from '@ionic/angular/dist/providers/toast-controller';
 @Component({
   selector: 'app-google-login',
   templateUrl: './google-login.component.html',
@@ -22,7 +23,8 @@ export class GoogleLoginComponent {
               private platform: Platform,
               private authservice: AuthService,
               public navCtrl: NavController,
-              private userservice: RetailerinfoService) {
+              private userservice: RetailerinfoService,
+              private toastCtrl: ToastController) {
 
     this.user = authservice.currentUserObservable;
 
@@ -32,18 +34,7 @@ export class GoogleLoginComponent {
   googleLogin() {
 
     if (this.platform.is('cordova')) {
-/*
-      this.userauth = this.afAuth.authState;
-
-      this.afAuth.auth.onAuthStateChanged(user =>  {
-
-          this.userID = user.uid;
-        if (this.userID) {
-          this.loadUser();
-
-        }
-      });
-       */
+      this. googleLogin2();
 
 
     } else {
@@ -53,6 +44,8 @@ export class GoogleLoginComponent {
       this.afAuth.auth.onAuthStateChanged(user =>  {
        this.userID = user.uid;
         if (this.userID) {
+
+
           this.loadUser();
 
         }
@@ -67,12 +60,12 @@ export class GoogleLoginComponent {
     try {
 
       const gplusUser = await this.gplus.login({
-        'webClientId': 'your-webClientId-XYZ.apps.googleusercontent.com',
+        'webClientId': 'AIzaSyCC8Z7uxZy1-pVtq6tJlRt6nNY71zpkWoc',
         'offline': true,
         'scopes': 'profile email'
       });
 
-      return await newFunction(gplusUser);
+      // return await this.afAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken));
 
     } catch (err) {
       console.log(err);
@@ -89,15 +82,27 @@ export class GoogleLoginComponent {
     }
   }
 
-  async googleLogin2(): Promise<void> {
+  async googleLogin2() {
     try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return await this.afAuth.auth.signInWithPopup(provider)
-    .then((credential) =>  {
-      this.authState = credential.user;
-      this.loadUser();
-     // this.updateUserData();
-  });
+      this.gplus.login({
+        'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
+        // tslint:disable-next-line:max-line-length
+        'webClientId': '415399973733-irn706ik5f6ddapnv8sfk48f5tbcn1e1.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+        // tslint:disable-next-line:max-line-length
+        'offline': true // Optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
+      }).then(user => {
+
+
+          this.afAuth.auth.signInAndRetrieveDataWithCredential(firebase.auth.GoogleAuthProvider.credential(user.idToken));
+          this.userauth = this.afAuth.authState;
+          this.afAuth.auth.onAuthStateChanged(authtest =>  {
+            this.userID = authtest.uid;
+          });
+          if (this.userID) {
+            this.loadUser();
+          }
+
+        });
 
     } catch (err) {
       console.log(err);
@@ -110,9 +115,24 @@ export class GoogleLoginComponent {
 
 
       if (res === undefined) {
+        this.presentToast('hai!! New User');
         this.navCtrl.navigateForward('registerpage');
+      } else if (res.usertype === 'Retailer') {
+        this.presentToast('Welcome back ' + res.userName);
+        this.navCtrl.navigateForward('retailerhomepage');
+      } else {
+        this.presentToast('Welcome back ' + res.userName);
+        this.navCtrl.navigateForward('home');
       }
     });
+}
+
+private async presentToast(message) {
+  const toast = await this.toastCtrl.create({
+    message,
+    duration: 3000
+  });
+  toast.present();
 }
 
   signOut() {
