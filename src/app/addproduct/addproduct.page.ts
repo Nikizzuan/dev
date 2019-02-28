@@ -29,7 +29,8 @@ authState: any = null;
     Description: 'Food Description',
     price: '0.00',
     retailer: '',
-    ischecked: false
+    ischecked: false,
+    retaileruid: ''
  };
 
  prductId = null;
@@ -44,7 +45,7 @@ authState: any = null;
   ngOnInit() {
 
     // firebase.initializeApp({});
-
+    this.productService.inttansid(null);
     this.prductId = this.route.snapshot.params['id'];
 
     if (this.prductId) {
@@ -58,9 +59,9 @@ authState: any = null;
   this.userauth = this.afAuth.authState;
 
   this.afAuth.auth.onAuthStateChanged(user =>  {
-
     this.userservice.getUser(user.uid).subscribe( res => {
       this.Product.retailer = res.storeName;
+      this.Product.retaileruid = user.uid;
     });
 
 

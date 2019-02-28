@@ -24,11 +24,11 @@ export class ViewcuponPage implements OnInit {
     ItemList: '',
     discount: 0,
     Term: '',
-    usersCouponID: []   
+    usersCouponID: []
 };
 
 todoId = null;
-usercoupon = null
+usercoupon = null;
 
 // user part
 
@@ -43,17 +43,17 @@ authState: any = null;
 
   ngOnInit() {
 
-    // get user id 
+    // get user id
 
     this.userauth = this.afAuth.authState;
 
     this.afAuth.auth.onAuthStateChanged(user =>  {
 
         this.userID = user.uid;
-  
+
     });
 
-  
+
     this.usercoupon = this.route.snapshot.params['usercoupon'];
     if (this.usercoupon === 'true') {
       this.usercoupon = this.route.snapshot.params['usercoupon'];
@@ -68,10 +68,10 @@ authState: any = null;
 
     }
 
-  
+
   }
 
-  
+
   loadTodo() {
     this.todoService.getTodo(this.todoId).subscribe( res => {
       this.todo = res;
@@ -81,13 +81,13 @@ authState: any = null;
   saveTodo() {
 
 
-    this.todo.CupponNum = this.todo.CupponNum- 1;
+    this.todo.CupponNum = this.todo.CupponNum - 1;
 
     this.todo.usersCouponID[this.todo.usersCouponID.length ] = this.userID;
 
     if (this.todoId) {
       this.todoService.Updatetod(this.todo, this.todoId).then(() => {
-      })
+      });
     } else {
        this.todoService.addTodo(this.todo).then(() => {
        });

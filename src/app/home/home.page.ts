@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo, TodoService } from '../services/todo.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Platform, NavController, ActionSheetController } from '@ionic/angular';
 import { Observable } from 'rxjs/internal/Observable';
 import { Router } from '@angular/router';
@@ -27,9 +26,11 @@ export class HomePage implements OnInit {
     title: '',
     amount: 0,
     date: Date.now(),
-    color: 'red',
+    color: 'greeen',
     expense:  null,
-    month: ''
+    month: 0,
+    Userid: '',
+    retailer: '',
 
  };
 
@@ -60,7 +61,7 @@ authState: any = null;
 
   constructor(private todoService: TodoService,
   private router: Router,
-  private transcationservice : TransactionService,
+  private transcationservice: TransactionService,
   private authservice: AuthService,
   private userservice: RetailerinfoService,
   private afAuth: AngularFireAuth,
@@ -70,14 +71,13 @@ authState: any = null;
 
   ngOnInit() {
 
-    this.loadtranscation()
-
     this.userauth = this.afAuth.authState;
 
     this.afAuth.auth.onAuthStateChanged(user =>  {
       this.userId = user.uid;
       if (this.userId) {
         this.loadTodo();
+        this.loadtranscation();
       }
     });
 
@@ -110,7 +110,9 @@ authState: any = null;
     });
   }
 
-  loadtranscation(){
+  loadtranscation() {
+
+    this.transcationservice.inttansid(this.userId);
 
     this.transcationservice.gettransactions().subscribe( res => {
       this.alltransaction = res;
@@ -129,7 +131,7 @@ authState: any = null;
   signOut() {
     this.authservice.signOut();
   }
-  
+
 
 
   showTransition() {
@@ -149,6 +151,8 @@ this. tabsinfo = 1;
             handler: () => {
               console.log('Top Up  RM 10.00');
               this.topup(10);
+              this.Addtransaction(10, 'Top Up  RM 10.00');
+              this.loadtranscation();
             }
           }, {
             text: 'RM 30.00',
@@ -156,6 +160,8 @@ this. tabsinfo = 1;
             handler: () => {
               console.log('Top Up  RM 30.00');
               this.topup(30);
+              this.Addtransaction(30, 'Top Up  RM 30.00');
+              this.loadtranscation();
             }
           }, {
             text: 'RM 50.00',
@@ -163,6 +169,8 @@ this. tabsinfo = 1;
             handler: () => {
               console.log('Top Up  RM 50.00');
               this.topup(50);
+              this.Addtransaction(60, 'Top Up  RM 50.00');
+              this.loadtranscation();
             }
           }, {
             text: 'Cancel',
@@ -184,11 +192,34 @@ this. tabsinfo = 1;
           this.userservice.UpdateUser(this.userinfos, this.userId).then(() => {
           });
         } else {
-       
+
         }
-        this.loadTodo(); 
+        this.loadTodo();
       }
-   
+
+      Addtransaction(amount: number, title: string) {
+
+        this.transaction.icon = 'arrow-up';
+        this.transaction.icon2 = 'add';
+        this.transaction.title = title;
+        this.transaction.amount = amount;
+        this.transaction.date = Date.now();
+        this.transaction.color = 'greeen';
+        this.transaction.expense =  null;
+        this.transaction.month = null;
+        this.transaction.Userid = this.userId;
+        this.transaction.retailer = null;
+
+        if (this.userId) {
+          this.transcationservice.addtransaction(this.transaction).then(() => {
+          });
+        } else {
+
+        }
+        this.loadTodo();
+      }
+
+
 
 
 }

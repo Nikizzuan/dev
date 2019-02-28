@@ -9,12 +9,15 @@ export interface Transaction {
   icon2: string;
   title: string;
   amount: number;
+  Userid: string;
+  retailer: string;
   date: number;
   color: string;
   expense:  boolean;
-  month: string;
+  month: number;
 
 }
+
 
 
 @Injectable({
@@ -25,8 +28,29 @@ export class TransactionService {
 
  private transaction: Observable<Transaction[]>;
 
-  constructor(db: AngularFirestore) {
-    this.transactionCollections = db.collection<Transaction>('Cupon');
+  constructor(private db: AngularFirestore) {
+
+   }
+
+   inttansid(uid: string) {
+
+     const order = 'desc';
+    if (uid) {
+      /*
+      this.transactionCollections = this.db.collection<Transaction>('Transaction', ref => {
+        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        if (order) { query = query.orderBy('date', order); }
+        if (uid) { query = query.where('Userid', '==', uid); }
+        return query;
+      });
+      */
+     // tslint:disable-next-line:max-line-length
+     this.transactionCollections = this.db.collection<Transaction>('Transaction', ref => ref.where('Userid', '==', uid));
+    } else {
+      this.transactionCollections = this.db.collection<Transaction>('Transaction');
+
+    }
+
 
     this.transaction = this.transactionCollections.snapshotChanges().pipe(map(action => {
 
@@ -37,6 +61,7 @@ export class TransactionService {
       });
     })
     );
+
    }
 
    gettransactions() {

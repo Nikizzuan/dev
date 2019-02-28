@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Product, ProductserviceService } from '../services/productservice.service';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-productmanagement',
@@ -9,6 +11,9 @@ import { Product, ProductserviceService } from '../services/productservice.servi
 })
 export class ProductmanagementPage implements OnInit {
 
+    // for userauth
+userauth: Observable<firebase.User>;
+authState: any = null;
  /* Product:  any = {
     img: '../assets/img/nasigoreng.jpg',
     title: 'Food Name',
@@ -18,13 +23,24 @@ export class ProductmanagementPage implements OnInit {
 
  Products: Product[];
 
-  constructor(private authservice: AuthService,private productservice: ProductserviceService) { }
+  constructor(private authservice: AuthService,
+    private productservice: ProductserviceService,
+    private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
 
-    this.productservice.getProducts().subscribe( res => {
-      this.Products = res;
+    this.userauth = this.afAuth.authState;
+
+    this.afAuth.auth.onAuthStateChanged(user =>  {
+      this.productservice.inttansid(user.uid);
+      this.productservice.getProducts().subscribe( res => {
+        this.Products = res;
+      });
     });
+
+
+
+
   }
 
   remove(item) {

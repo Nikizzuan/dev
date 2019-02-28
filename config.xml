@@ -102,5 +102,5 @@
         <variable name="WEB_APPLICATION_CLIENT_ID" value="415399973733-irn706ik5f6ddapnv8sfk48f5tbcn1e1.apps.googleusercontent.com" />
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
     </plugin>
-    <engine name="android" spec="7.1.4" />
+    <engine name="android" spec="~7.1.4" />
 </widget>

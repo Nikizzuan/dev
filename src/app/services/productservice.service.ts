@@ -10,8 +10,9 @@ export interface Product {
   Description: string;
   price: string;
   retailer: string;
+  retaileruid: string;
   ischecked: boolean;
-   
+
 }
 
 
@@ -22,34 +23,37 @@ export class ProductserviceService {
 
   private productsCollections: AngularFirestoreCollection<Product>;
   private Product: Observable<Product[]>;
-  constructor(db: AngularFirestore) { 
+  constructor(private db: AngularFirestore) {}
 
-    this.productsCollections = db.collection<Product>('Product');
-    
 
-    this.Product = this.productsCollections.snapshotChanges().pipe(map(action => {
+  inttansid(retailer: string) {
 
-      return action.map(a => {
-        const data = a.payload.doc.data();
-        const id = a.payload.doc.id;
-        return{ id, ...data };
-      });
-    })
-    );
+   if (retailer) {
+
+    this.productsCollections = this.db.collection<Product>('Product', ref => ref.where('retaileruid', '==', retailer));
+   } else {
+     this.productsCollections = this.db.collection<Product>('Product');
+
+   }
+
+
+   this.Product = this.productsCollections.snapshotChanges().pipe(map(action => {
+
+    return action.map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return{ id, ...data };
+    });
+  })
+  );
+
   }
 
-
-  
   getProducts() {
     return this.Product;
   }
 
-  getProductsSaler(find) {
 
-    let db2: AngularFirestore;
-    return  db2.collection<Product>('Product', ref => ref.where("retailer","==", find));
-
-  }
 
   getProduct(id) {
     return this.productsCollections.doc<Product>(id).valueChanges();
