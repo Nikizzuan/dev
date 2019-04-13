@@ -34,17 +34,19 @@
         <div class="card-title"> {{ item.CuponName }}</div>
         <div class="card-amount"> RM {{ item.Amountalocate }}.00</div>
         <div class="card-subtitle">Expiration Date : {{ item.Expiredate | date:'short' }}</div>
-        <ion-item-sliding>
-            <ion-item color="warning" >
-                <ion-label >Slide To View More & Buy >>></ion-label>
-              </ion-item>
-        <ion-item-options side="end">
-            <ion-item-option lines='inset' button [routerLink] = "['/viewcupon', item.id , false]" >View More</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <ion-item color="warning" >
+          <ion-button slot="end" lines='inset' button [routerLink] = "['/viewcupon', item.id , false]" >View More</ion-button>
+        </ion-item>
 
 
       </ion-card>
+<!-- 
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button (click)="addcupon()">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+        -->
 
     </ion-content>
 

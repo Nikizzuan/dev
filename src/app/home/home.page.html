@@ -98,7 +98,7 @@
     </ion-tab-button>
     <ion-tab-button tab="Transition History"  (click)="showTransition()" >
       <ion-icon name="apps"></ion-icon>
-      <ion-label>Transition History</ion-label>
+      <ion-label>Transaction History</ion-label>
     </ion-tab-button>
 
   </ion-tab-bar>
@@ -110,20 +110,17 @@
     
     <ion-content class="card-background-page" *ngIf="!tabsinfo" >
 
-        <ion-card *ngFor="let item of viewArray">
+        <ion-card *ngFor="let item of viewArray; let i = index" >
         
           <img src="../assets/img/retailercupon3.png"/>
           <div class="card-title"> {{ item.CuponName }}</div>
-          <div class="card-amount"> RM {{ item.Amountalocate | number : '1.2-2' }}</div>
+          <div class="card-amount"> RM {{ item.usersCouponID[i].voucherBalance | number : '1.2-2' }}</div>
           <div class="card-subtitle">Expiration Date : {{ item.Expiredate | date:'short' }}</div>
-          <ion-item-sliding>
-              <ion-item color="warning" >
-                  <ion-label >Slide To View More & Use >>></ion-label>
-                </ion-item>
-          <ion-item-options side="end">
-              <ion-item-option lines='inset' button [routerLink] = "['/viewcupon', item.id , true]" >View More</ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
+        
+          <ion-item color="warning" >
+              <ion-button slot="end" lines='inset' button [routerLink] = "['/viewcupon', item.id , true]" >View More</ion-button>
+            </ion-item>
+
   
   
         </ion-card>

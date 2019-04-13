@@ -27,7 +27,7 @@ export class TodoService {
  private todosCollections: AngularFirestoreCollection<Todo>;
 
  private Cupon: Observable<Todo[]>;
-  constructor(db: AngularFirestore) {
+  constructor(private db: AngularFirestore) {
     this.todosCollections = db.collection<Todo>('Cupon');
 
     this.Cupon = this.todosCollections.snapshotChanges().pipe(map(action => {
@@ -41,7 +41,7 @@ export class TodoService {
     );
   }
 
-  // resume here  min 26:06
+
 
   getTodos() {
     return this.Cupon;
@@ -61,6 +61,20 @@ export class TodoService {
 
   removeTodo(id) {
     return this.todosCollections.doc(id).delete();
+  }
+
+  Oninit() {
+    this.todosCollections = this.db.collection<Todo>('Cupon');
+
+    this.Cupon = this.todosCollections.snapshotChanges().pipe(map(action => {
+
+      return action.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return{ id, ...data };
+      });
+    })
+    );
   }
 
 

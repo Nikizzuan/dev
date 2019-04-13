@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Todo, TodoService } from '../services/todo.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Platform, NavController, ActionSheetController } from '@ionic/angular';
+import { Platform, NavController, ActionSheetController, Slide, Slides, List, Card } from '@ionic/angular';
 import { Observable } from 'rxjs/internal/Observable';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -9,12 +9,20 @@ import { RetailerinfoService, Userinfo } from '../services/retailerinfo.service'
 import { Transaction, TransactionService } from '../services/transaction.service';
 // import { loginpage } from  './loginpage/loginpage.page'
 // test for surface pro
+
+
+
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  @ViewChild('slidingList') slidingList: Slides;
+
+
   todos: Todo[];
   user: Observable<firebase.User>;
   tabsinfo: any;
@@ -82,13 +90,14 @@ authState: any = null;
     });
 
 
+       this.todoService.Oninit();
        this.todoService.getTodos().subscribe( res => {
 
            let index2 = 0;
          for (let index = 0; index < res.length ; index++) {
 
           for (let index3 = 0; index3 < res[index].usersCouponID.length ; index3++) {
-             if (res[index].usersCouponID[index3] === this.userId) {
+             if (res[index].usersCouponID[index3].voucherUserId === this.userId) {
               this.viewArray[index2] = res[index];
               index2 = index2 + 1;
 
@@ -103,6 +112,7 @@ authState: any = null;
 
   }
 
+  // Stop the slide autoplay when the view will leave
   loadTodo() {
     this.userservice.getUser(this.userId).subscribe( res => {
       this.userinfos = res;
@@ -136,6 +146,7 @@ authState: any = null;
 
   showTransition() {
 this. tabsinfo = 1;
+this. loadtranscation();
   }
   showVoucher() {
     this. tabsinfo = null;
@@ -151,8 +162,7 @@ this. tabsinfo = 1;
             handler: () => {
               console.log('Top Up  RM 10.00');
               this.topup(10);
-              this.Addtransaction(10, 'Top Up  RM 10.00');
-              this.loadtranscation();
+
             }
           }, {
             text: 'RM 30.00',
@@ -160,8 +170,6 @@ this. tabsinfo = 1;
             handler: () => {
               console.log('Top Up  RM 30.00');
               this.topup(30);
-              this.Addtransaction(30, 'Top Up  RM 30.00');
-              this.loadtranscation();
             }
           }, {
             text: 'RM 50.00',
@@ -169,8 +177,7 @@ this. tabsinfo = 1;
             handler: () => {
               console.log('Top Up  RM 50.00');
               this.topup(50);
-              this.Addtransaction(60, 'Top Up  RM 50.00');
-              this.loadtranscation();
+
             }
           }, {
             text: 'Cancel',
@@ -190,6 +197,11 @@ this. tabsinfo = 1;
 
         if (this.userId) {
           this.userservice.UpdateUser(this.userinfos, this.userId).then(() => {
+
+            this.Addtransaction(amount, 'Top Up  RM ' + amount);
+            this.loadtranscation();
+
+
           });
         } else {
 

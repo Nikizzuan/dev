@@ -28,6 +28,11 @@ import { File } from '@ionic-native/file/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+// import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+// import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 
 @NgModule({
   declarations: [AppComponent, MapslocaterComponent],
@@ -38,6 +43,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
     IonicModule,
     AppRoutingModule,
     CommonModule,
+   // NgxQRCodeModule,
     // LocationSelectPageModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
@@ -52,6 +58,9 @@ import { FCM } from '@ionic-native/fcm/ngx';
     DatePicker,
     Firebase,
     FCM,
+    BarcodeScanner,
+    LocalNotifications,
+   // QRScanner,
   // Network,
    // ConnectivityServiceService,
  //   GoogleMapsService,

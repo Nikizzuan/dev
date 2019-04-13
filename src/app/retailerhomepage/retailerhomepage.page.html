@@ -81,7 +81,7 @@
 
   <div style="min-height: 150px!important; background: rgb(90, 115, 228);"  >
       <ion-label class="main-titlepage">ACCOUNT BALANCE  </ion-label>
-      <ion-label class="BalanceNum">RM 00.0 </ion-label>
+      <ion-label class="BalanceNum">RM {{userinfos.eWallet | number : '1.2-2'}}  </ion-label>
   
   </div>
   <br>
@@ -93,7 +93,7 @@
     </ion-tab-button>
     <ion-tab-button tab="Transition History"  (click)="showTransition()" >
       <ion-icon name="apps"></ion-icon>
-      <ion-label>Transition History</ion-label>
+      <ion-label>Sale Statement</ion-label>
     </ion-tab-button>
 
   </ion-tab-bar>
@@ -104,38 +104,38 @@
 <ion-content >
     <ion-content *ngIf="!tabsinfo" >
 
-      <p text-center> graph here </p>
-      <ion-card >
-        <ion-card-header>
-          Analytics
-        </ion-card-header>
-        <ion-card-content>
-          <canvas #valueBarsCanvas></canvas>
-        </ion-card-content>
-      </ion-card>
+  
+      <ion-card [hidden]="!totalchartData">
+          <ion-card-header>
+            Statistics
+          </ion-card-header>
+          <ion-card-content>
+            <canvas #valueBarsCanvas></canvas>
+          </ion-card-content>
+        </ion-card>
 
     </ion-content>
 
 <ion-content  *ngIf="tabsinfo">
 
-    <ion-card>
-        <ion-item >
-            <ion-icon class="icon1" [name]="transition.icon" slot="start"></ion-icon>
-            <ion-label text-wrap>
-            <ion-text class="title" color="primary">
-              <p class="title" >{{transition.title}}</p>
-            </ion-text>
-            <p class="messagetext">{{transition.date  | date:'short' }}</p>
-           
-          </ion-label>
-            
-            <div  class="item-note " slot="end">
-              <ion-icon [name]="transition.icon2" ></ion-icon>
-              {{transition.amount}}
-            </div>
+  <ion-card *ngFor="let item of alltransaction">
+    <ion-item >
+        <ion-icon class="icon1"  name="arrow-up" slot="start"></ion-icon>
+        <ion-label text-wrap>
+        <ion-text class="title" color="primary">
+          <p class="title" >{{item.title}}</p>
+        </ion-text>
+        <p class="messagetext">{{item.date  | date:'short' }}</p>
+       
+      </ion-label>
+        
+        <div  class="item-note " slot="end">
+          <ion-icon name="add" ></ion-icon>
+          {{item.amount}}
+        </div>
 
-          </ion-item >
-    </ion-card>
+      </ion-item >
+</ion-card>
 
     </ion-content> 
 </ion-content>

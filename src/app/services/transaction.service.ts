@@ -84,4 +84,21 @@ export class TransactionService {
     return this.transactionCollections.doc(id).delete();
   }
 
+
+  getCollectionoTtran(email: string) {
+
+    this.transactionCollections = this.db.collection<Transaction>('Transaction', ref => ref.where('retailer', '==', email));
+
+    this.transaction = this.transactionCollections.snapshotChanges().pipe(map(action => {
+
+      return action.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return{ id, ...data };
+      });
+    })
+    );
+    return this.transaction;
+  }
+
 }

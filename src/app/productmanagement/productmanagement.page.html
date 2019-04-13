@@ -35,7 +35,7 @@
     </ion-card-header>
     <ion-card-content>
         <p>Description: {{item.Description}}</p>
-        <p>RM: {{item.price}}</p>
+        <p>RM: {{item.price | number : '1.2-2'}}</p>
         <div slot="end">
           <ion-icon  name="create" lines='inset' button [routerLink] = "['/addproduct', item.id]"></ion-icon>
           <ion-icon name="trash" (click)="onClick()"></ion-icon>
@@ -45,7 +45,7 @@
 </ion-card>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="onClick()">
+  <ion-fab-button (click)="addproduct()">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

@@ -8,7 +8,7 @@ declare var google: any;
   templateUrl: './googlemaps.component.html',
   styleUrls: ['./googlemaps.component.scss']
 })
-export class GooglemapsComponent implements OnInit {
+export class GooglemapsComponent  {
 
 // maps
 users: Userinfo[];
@@ -30,7 +30,7 @@ markers: any[];
 
   }
 
-  ngOnInit() {
+  ionViewDidEnter() {
     // Set latitude and longitude of some place
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 5.355933, lng: 100.302518 },
@@ -42,9 +42,6 @@ markers: any[];
         this.users = res;
         this.loopthruuser(this.users);
       });
-
-
-
   }
 
   loopthruuser(user) {
@@ -74,7 +71,7 @@ markers: any[];
         };
         const marker = new google.maps.Marker({
           position: results[0].geometry.location,
-          icon: { url : '../assets/img/food.svg' },
+          icon: { url : '../assets/img/restoran.png' },
           animation: google.maps.Animation.BOUNCE,
           map: this.map,
         });

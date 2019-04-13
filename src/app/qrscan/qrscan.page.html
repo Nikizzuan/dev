@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>qrscan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+<ion-card *ngIf="qrcodestatus">
+  <ion-item>
+    <ion-label>{{qrcodestatus}}</ion-label>
+  </ion-item>
+</ion-card>
+ 
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+   
+  <ion-button expand="full"  (click)="scancode()">
+      Scan QR Code
+    </ion-button>
+
+
+  </ion-toolbar>
+</ion-footer>

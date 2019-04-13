@@ -26,19 +26,19 @@
   <ion-list lines="full">
 
     <ion-item>
-      <ion-input type="text" [(ngModel)]="todo.CuponName"></ion-input>
+      <ion-input type="text" placeholder="Voucher Name" [(ngModel)]="todo.CuponName"></ion-input>
     </ion-item>
     
     <ion-item>
         <ion-label fixed>RM :</ion-label>
 
-        <ion-input type="number" [(ngModel)]="todo.Amountalocate"></ion-input>
+        <ion-input type="number" placeholder="0.00" [(ngModel)]="todo.Amountalocate"></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>Number Of Cuppons:</ion-label>
 
-          <ion-input type="number" [(ngModel)]="todo.CupponNum"></ion-input>
+          <ion-input type="number" placeholder="10" [(ngModel)]="todo.CupponNum"></ion-input>
 
     </ion-item >
 
@@ -54,13 +54,13 @@
     <ion-item>
         <ion-label fixed>Discoun (%):</ion-label>
 
-            <ion-input type="text" [(ngModel)]="todo.discount"></ion-input>
+            <ion-input type="text"  placeholder="30" [(ngModel)]="todo.discount"></ion-input>
     </ion-item>
 
 
     <ion-item>
       <ion-label fixed>Term and Condition:</ion-label>
-          <ion-textarea  rows="6" cols="20"  [(ngModel)]="todo.Term"></ion-textarea>
+          <ion-textarea  rows="6" cols="20"  placeholder="Rule and Regulation of the voucher" [(ngModel)]="todo.Term"></ion-textarea>
         
   </ion-item>
 

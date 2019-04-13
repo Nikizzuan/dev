@@ -1,0 +1,35 @@
+<style>
+
+.scroll {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+</style>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+
+    
+    <ion-card [hidden]="!totalchartData">
+        <ion-card-header>
+          Analytics
+        </ion-card-header>
+        <ion-card-content>
+
+          <div class="scroll" >
+              <canvas #valueBarsCanvas></canvas>
+          </div>
+          	 
+       
+        
+        </ion-card-content>
+      </ion-card>
+   
+</ion-content>

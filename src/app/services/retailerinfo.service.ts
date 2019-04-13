@@ -41,7 +41,7 @@ authState: any = null;
 
   private user: Observable<Userinfo[]>;
 
-  constructor(db: AngularFirestore, private authservice: AuthService, private afAuth: AngularFireAuth) {
+  constructor(private db: AngularFirestore, private authservice: AuthService, private afAuth: AngularFireAuth) {
 
     this.userCollections = db.collection<Userinfo>('UserInfo');
 
@@ -96,5 +96,35 @@ authState: any = null;
     return this.usercurr;
    }
 
+   getRetailers() {
+
+    this.userCollections = this.db.collection<Userinfo>('UserInfo', ref => ref.where('usertype', '==', 'Retailer'));
+
+    this.user = this.userCollections.snapshotChanges().pipe(map(action => {
+
+      return action.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return{ id, ...data };
+      });
+    })
+    );
+
+    return this.user;
+  }
+
+  oninitmaker() {
+    this.userCollections = this.db.collection<Userinfo>('UserInfo');
+
+    this.user = this.userCollections.snapshotChanges().pipe(map(action => {
+
+      return action.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return{ id, ...data };
+      });
+    })
+    );
+  }
 
 }

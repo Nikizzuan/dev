@@ -4,7 +4,7 @@
       
 
       <ion-buttons slot="end">
-      <ion-button  (click)="back()">
+      <ion-button  (click)="goBack()">
        Back
        </ion-button>
     
@@ -61,8 +61,11 @@
              <ion-list>
               <ion-item *ngFor="let item of todo.ItemList">
                   <ion-label>{{item.title}}</ion-label>
+              <ion-item>
+                  <ion-textarea rows="3" disabled  [(ngModel)]="item.Description"></ion-textarea>
+              </ion-item>
                   
-                  <ion-label>{{item.Description}}</ion-label>
+              
               </ion-item>
             </ion-list>
 
@@ -105,7 +108,7 @@
           <ion-button expand="full" (click)="saveTodo()" *ngIf="!usercoupon">
             Purchase Coupon Now
           </ion-button>
-          <ion-button expand="full" (click)="use()"*ngIf="usercoupon" >
+          <ion-button expand="full" lines='inset' button [routerLink] = "['/qr-pay', todoId]" *ngIf="usercoupon" >
             Use Coupon 
           </ion-button>
     </ion-col>

@@ -9,6 +9,7 @@ import * as firebase from 'firebase';
 import { RetailerinfoService } from '../services/retailerinfo.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -24,10 +25,10 @@ userauth: Observable<firebase.User>;
 authState: any = null;
 
   Product:  Product = {
-    img: '../assets/img/nasigoreng.jpg',
-    title: 'Food Name',
-    Description: 'Food Description',
-    price: '0.00',
+    img: '../assets/img/uploadimage.png',
+    title: '',
+    Description: '',
+    price: '',
     retailer: '',
     ischecked: false,
     retaileruid: ''
@@ -40,7 +41,8 @@ authState: any = null;
      public camera: Camera,
      private file: File,
      private userservice: RetailerinfoService,
-    private afAuth: AngularFireAuth) { }
+    private afAuth: AngularFireAuth,
+    private navctrl: NavController) { }
 
   ngOnInit() {
 
@@ -82,9 +84,11 @@ authState: any = null;
 
     if (this.prductId) {
       this.productService.UpdateProduct(this.Product, this.prductId).then(() => {
+        this. goBack();
       });
     } else {
        this.productService.addProduct(this.Product).then(() => {
+         this. goBack();
        });
     }
   }
@@ -179,6 +183,12 @@ authState: any = null;
         }
       );
     });
+  }
+
+  goBack() {
+
+    this.navctrl.goBack();
+
   }
 
 

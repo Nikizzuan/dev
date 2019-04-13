@@ -100,6 +100,12 @@ export class AppComponent implements OnInit {
       url: '/list',
       icon: 'notifications'
     }
+    ,
+    {
+      title: 'test',
+      url: '/test',
+      icon: 'notifications'
+    }
   ];
 
   userID: any;
@@ -151,22 +157,22 @@ export class AppComponent implements OnInit {
       this.fcm2.getToken();
       this.fcm.onNotification().subscribe(data => {
         console.log(data);
-        this.presentToast(data);
+
         if (data.wasTapped) {
           console.log('Received in background');
-          this.router.navigate([data.landing_page, data.price]);
+          this.presentToast(data.body);
+          this.router.navigateByUrl( '/' + data.landing_page + '/' + data.QrCode );
         } else {
           console.log('Received in foreground');
-          this.router.navigate([data.landing_page, data.price]);
+          this.presentToast(data.body);
+          this.router.navigateByUrl( '/' + data.landing_page + '/' + data.QrCode );
         }
       });
 
 
     });
 
-    this.fcm.getToken().then(token => {
-      console.log(token);
-    });
+
   }
 
 
@@ -184,9 +190,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  pushnotification() {
 
-  }
 
   loadUser() {
     this.userservice.getUser(this.userID).subscribe( res => {
@@ -194,11 +198,25 @@ export class AppComponent implements OnInit {
       if (res === undefined) {
         this.navCtrl.navigateForward('registerpage');
       } else {
-        if (res.usertype === 'Student' || res.usertype === 'Staff' ) {
+        if (res.usertype === 'Student' ) {
+          this.fcm.subscribeToTopic('All');
+          this.fcm.subscribeToTopic('Student');
+          this.fcm.subscribeToTopic('stusdentStaff');
+          this.fcm.subscribeToTopic('studentRetailer');
           this.appPages = this.studentPage;
         } else if (res.usertype === 'Retailer' ) {
+          this.fcm.subscribeToTopic('All');
+          this.fcm.subscribeToTopic('Retailer');
+          this.fcm.subscribeToTopic('RetailerStaff');
+          this.fcm.subscribeToTopic('studentRetailer');
           this.appPages = this.retailerPage;
-        }
+        } else if (res.usertype === 'Staff' ) {
+          this.fcm.subscribeToTopic('All');
+        this.fcm.subscribeToTopic('Staff');
+        this.fcm.subscribeToTopic('stusdentStaff');
+        this.fcm.subscribeToTopic('StaffRetailer');
+          this.appPages = this.studentPage;
+      }
       }
 
     });

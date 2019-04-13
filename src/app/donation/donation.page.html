@@ -83,12 +83,12 @@ color: #8A8A8A;
 
   <ion-item>
       <ion-label class="rm2">RM </ion-label>
-      <ion-input type="number" placeholder="Enter Your Amount"></ion-input>
+      <ion-input [(ngModel)]="amounttodonate" type="number" placeholder="Enter Your Amount"></ion-input>
 </ion-item>
  
 </ion-card>
 
-<ion-button  expand="full" (click)="onClick()" >
+<ion-button  expand="full" (click)="donate(amounttodonate)" >
   Confirm
 </ion-button>
 </ion-content>

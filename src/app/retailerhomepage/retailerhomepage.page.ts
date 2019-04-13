@@ -7,6 +7,9 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from '../services/fcm.service';
+import { Transaction, TransactionService } from '../services/transaction.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { RetailerinfoService, Userinfo } from '../services/retailerinfo.service';
 
 @Component({
   selector: 'app-retailerhomepage',
@@ -18,56 +21,85 @@ export class RetailerhomepagePage implements OnInit {
 
   data: Observable<any[]>;
 
-
-  transition:  any = {
-    icon: 'arrow-round-down',
-    icon2: 'remove',
-    title: 'Food and beverages',
-    amount: '07.00',
+  transaction:  Transaction = {
+    icon: '',
+    icon2: '',
+    title: '',
+    amount: 0,
     date: Date.now(),
-    color: 'red'
+    color: 'greeen',
+    expense:  null,
+    month: 0,
+    Userid: '',
+    retailer: '',
 
  };
 
- months = [
-  {value: 0, name: 'January'},
-  {value: 1, name: 'February'},
-  {value: 2, name: 'March'},
-  {value: 3, name: 'April'},
-];
+ userinfos: Userinfo = {
+  userName: '',
+  matricNum: '',
+  email: '',
+  usertype: '',
+  storeAdress: '',
+  storeName: '',
+  University: '',
+  UniversirtyPoint: 0,
+  myeventplaner: '',
+  myqrplaner: '',
+  StoreLocid: '',
+  eWallet: 0,
+  academicYear: ''
+ };
 
-transaction = {
-  value: 0,
-  expense: false,
-  month: 0
-};
 
- @ViewChild('valueBarsCanvas') valueBarsCanvas;
- valueBarsChart: any;
 
- chartData = null;
+ alltransaction: Transaction[];
+ userId = null;
+ // for userauth
+userauth: Observable<firebase.User>;
+authState: any = null;
+
 
   constructor(private authservice: AuthService,
     private toastCtrl: ToastController,
     private platform: Platform,
+    private afAuth: AngularFireAuth,
+    private userservice: RetailerinfoService,
+    private transcationservice: TransactionService,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private fcm: FcmService,
     ) {
    // this.initializeApp();
      }
 
+     totalchartData = null;
+
+     months = [
+      {value: 0, name: 'January'},
+      {value: 1, name: 'February'},
+      {value: 2, name: 'March'},
+      {value: 3, name: 'April'},
+    ];
+
+      @ViewChild('valueBarsCanvas') valueBarsCanvas;
+      valueBarsChart: any;
+
 
   ngOnInit() {
 
-        // Reference to our Firebase List
-  //      this.ref = this.db.list('transactions', ref => ref.orderByChild('month'));
+    this.userauth = this.afAuth.authState;
 
-        // Catch any update to draw the Chart
+    this.afAuth.auth.onAuthStateChanged(user =>  {
+      this.userId = user.uid;
+      if (this.userId) {
+        this.loadTodo();
 
-         //   this.createCharts(this.transaction);
+      }
+    });
 
   }
+
+
 
 
   signOut() {
@@ -77,15 +109,80 @@ transaction = {
 
   showTransition() {
 this. tabsinfo = 1;
+
   }
   showVoucher() {
     this. tabsinfo = null;
+    this.loadtranscation( this.userinfos.email);
+      }
+
+
+      // transcation
+
+      loadTodo() {
+        this.userservice.getUser(this.userId).subscribe( res => {
+          this.userinfos = res;
+
+          this.loadtranscation(res.email);
+
+        });
+      }
+
+      loadtranscation(email: any) {
+
+      this.transcationservice.getCollectionoTtran(email).subscribe( res => {
+          this.alltransaction = res;
+          this.createCharts(res);
+        });
+
+      }
+
+
+      // chart js start here
+
+      getReportValues() {
+        const reportByMonth = {
+          0: null,
+          1: null,
+          2: null,
+          3: null
+        };
+
+        for (const trans of this.totalchartData) {
+          if (reportByMonth[trans.month]) {
+            if (trans.expense) {
+              reportByMonth[trans.month] -= +trans.amount;
+            } else {
+              reportByMonth[trans.month] += +trans.amount;
+            }
+          } else {
+            if (trans.expense) {
+              reportByMonth[trans.month] = 0 - +trans.amount;
+            } else {
+              reportByMonth[trans.month] = +trans.amount;
+            }
+          }
+        }
+        return Object.keys(reportByMonth).map(a => reportByMonth[a]);
+
+      }
+
+
+
+
+      updateCharts(data) {
+        this.totalchartData = data;
+        const chartData = this.getReportValues();
+              // Update our dataset
+        this.valueBarsChart.data.datasets.forEach((dataset) => {
+          dataset.data = chartData;
+        });
+        this.valueBarsChart.update();
       }
 
       createCharts(data) {
-        this.chartData = data;
-
-        // Calculate Values for the Chart
+        this.totalchartData = data;
+// Calculate Values for the Chart
         const chartData = this.getReportValues();
 
         // Create the chart
@@ -119,7 +216,7 @@ this. tabsinfo = 1;
               yAxes: [{
                 ticks: {
                   callback: function (value, index, values) {
-                    return value + '$';
+                    return  'RM ' + value ;
                   },
                   suggestedMin: 0
                 }
@@ -129,31 +226,6 @@ this. tabsinfo = 1;
         });
       }
 
-      getReportValues() {
-        const reportByMonth = {
-          0: null,
-          1: null,
-          2: null,
-          3: null
-        };
-
-        for (const trans of this.chartData) {
-          if (reportByMonth[trans.month]) {
-            if (trans.expense) {
-              reportByMonth[trans.month] -= +trans.value;
-            } else {
-              reportByMonth[trans.month] += +trans.value;
-            }
-          } else {
-            if (trans.expense) {
-              reportByMonth[trans.month] = 0 - +trans.value;
-            } else {
-              reportByMonth[trans.month] = +trans.value;
-            }
-          }
-        }
-        return Object.keys(reportByMonth).map(a => reportByMonth[a]);
-      }
 
 
 }

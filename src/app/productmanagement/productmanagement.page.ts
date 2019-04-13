@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { Product, ProductserviceService } from '../services/productservice.service';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-productmanagement',
@@ -25,7 +26,8 @@ authState: any = null;
 
   constructor(private authservice: AuthService,
     private productservice: ProductserviceService,
-    private afAuth: AngularFireAuth) { }
+    private afAuth: AngularFireAuth,
+    private navctrl: NavController) { }
 
   ngOnInit() {
 
@@ -52,5 +54,10 @@ authState: any = null;
     this.authservice.signOut();
   }
 
+
+  addproduct() {
+  this.navctrl.navigateForward('addproduct');
+
+  }
 
 }

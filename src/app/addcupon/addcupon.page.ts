@@ -8,6 +8,7 @@ import { RetailerinfoService } from '../services/retailerinfo.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { forEach } from '@angular/router/src/utils/collection';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -18,15 +19,15 @@ import { forEach } from '@angular/router/src/utils/collection';
 export class AddcuponPage implements OnInit {
 
 todo: Todo = {
-    CuponName: 'voucher name',
+    CuponName: '',
     Expiredate: '',
     CreatedAt: new Date().getTime(),
     Retailer: '',
     CupponType: 'retailer',
-    Amountalocate: 0,
-    CupponNum: 0,
-    ItemList: '',
-    discount: 30,
+    Amountalocate: null,
+    CupponNum: null,
+    ItemList: [],
+    discount: null,
     Term: '',
     usersCouponID: []
 };
@@ -34,7 +35,7 @@ todo: Todo = {
 
 
 
-Products: Product[] = [];
+Products: Product[];
 
 // for userauth
 userauth: Observable<firebase.User>;
@@ -47,7 +48,8 @@ todoId = null;
     private datePicker: DatePicker,
     private productservice: ProductserviceService,
     private userservice: RetailerinfoService,
-    private afAuth: AngularFireAuth) { }
+    private afAuth: AngularFireAuth,
+    private navctrl: NavController) { }
 
   ngOnInit() {
 
@@ -58,10 +60,21 @@ todoId = null;
     }
 
 
+    this.userauth = this.afAuth.authState;
 
+    this.afAuth.auth.onAuthStateChanged(user =>  {
+
+    this.userservice.getUser(user.uid).subscribe( res => {
+      this.todo.Retailer = res.storeName;
+    });
+      this.productservice.inttansid(user.uid);
+      this.productservice.getProducts().subscribe( res => {
+        this.Products = res;
+      });
+    });
 
   // get retailer info
-
+/*
   this.userauth = this.afAuth.authState;
 
   this.afAuth.auth.onAuthStateChanged(user =>  {
@@ -90,7 +103,7 @@ todoId = null;
 
 
   });
-
+  */
 
   }
 
@@ -105,23 +118,25 @@ todoId = null;
 
   saveTodo() {
 
-    /* for (let index = 0; index < this.Products.length; index++) {
+    for (let index = 0; index < this.Products.length; index++) {
 
 
-       if (this.Products[index].ischecked = true) {
-           this.todo.ItemList = this.todo.ItemList + ',' + this.Products[index].title
+       if (this.Products[index].ischecked === true) {
+           this.todo.ItemList.push(this.Products[index]);
        }
 
-    }*/
+    }
 
-    this.todo.ItemList = this.Products;
+   // this.todo.ItemList = this.Products;
 
 
     if (this.todoId) {
       this.todoService.Updatetod(this.todo, this.todoId).then(() => {
+        this.goBack();
       });
     } else {
        this.todoService.addTodo(this.todo).then(() => {
+        this.goBack();
        });
     }
   }
@@ -143,5 +158,10 @@ todoId = null;
     );
   }
 
+  goBack() {
+
+    this.navctrl.goBack();
+
+  }
 
 }

@@ -1,5 +1,11 @@
 <ion-header>
   <ion-toolbar>
+      <ion-buttons slot="end">
+          <ion-button  (click)="goBack()">
+           Back
+           </ion-button>
+        
+          </ion-buttons>
 
     <ion-title *ngIf="!prductId">Add Product</ion-title>
     <ion-title *ngIf="prductId">Edit Product</ion-title>
@@ -20,16 +26,16 @@
     </button>
     <ion-item>
  
-      <ion-input type="text" [(ngModel)]="Product.title"></ion-input>
+      <ion-input type="text" placeholder="Product Name" [(ngModel)]="Product.title"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input type="textarea" [(ngModel)]="Product.Description"></ion-input>
+      <ion-input type="textarea" placeholder="Product Description" [(ngModel)]="Product.Description"></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>RM : </ion-label>
-      <ion-input type="number" [(ngModel)]="Product.price"></ion-input>
+      <ion-input type="number" placeholder="0.00" [(ngModel)]="Product.price"></ion-input>
     </ion-item>
   
   </ion-list>
