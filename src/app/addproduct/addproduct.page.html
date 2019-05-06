@@ -21,7 +21,9 @@
       
     </ion-item>
     <ion-img [src]="Product.img" ></ion-img>
-    <button ion-button icon-only (click)="pickImage()">
+    <img src="{{this.finalimage}}" alt="" srcset="">
+   
+    <button ion-button icon-only (click)="openImagePickerCrop()">
       <ion-icon name="camera"></ion-icon>
     </button>
     <ion-item>

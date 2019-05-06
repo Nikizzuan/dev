@@ -1,0 +1,46 @@
+<ion-header >
+    <ion-toolbar color ="primary">
+      
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: #ffffff;"></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+      <ion-button  (click)="signOut()">
+       Log Out
+       </ion-button>
+    
+      </ion-buttons>
+   
+      <ion-title   >
+        Voucher Management  
+       
+      </ion-title>
+  
+  
+    </ion-toolbar >
+  
+  
+  </ion-header>
+
+<ion-content class="card-background-page">
+
+    <ion-card *ngFor="let item of todos">
+    
+      <img src="../assets/img/retailercupon3.png"/>
+      <div class="card-title"> {{ item.CuponName }}</div>
+      <div class="card-amount"> RM {{ item.Amountalocate }}.00</div>
+      <div class="card-subtitle">Expiration Date : {{ item.Expiredate | date:'short' }}</div>
+      <ion-item color="warning" >
+        <ion-text > <strong>Number Of voucher left :</strong> <strong> {{ item.CupponNum }}</strong> </ion-text>
+      </ion-item>
+
+
+    </ion-card>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="addcupon()">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+</ion-content>

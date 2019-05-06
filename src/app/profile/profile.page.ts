@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { Userinfo, RetailerinfoService } from '../services/retailerinfo.service';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +26,11 @@ export class ProfilePage implements OnInit {
     myqrplaner: 'null',
     StoreLocid: '',
     eWallet: 0,
-    academicYear: ''
+    academicYear: '',
+    storeUniqeID: '',
+    storetype: '',
+    approval: 'unapprove',
+    date: Date.now()
 };
 
 userID: any;
@@ -38,7 +43,8 @@ isRetailer: any = null;
 
 
 
-  constructor( private authservice: AuthService, private afAuth: AngularFireAuth, private userservice: RetailerinfoService) { }
+  constructor( private authservice: AuthService, private gplus: GooglePlus,
+    private afAuth: AngularFireAuth, private userservice: RetailerinfoService) { }
 
    ngOnInit() {
 
@@ -69,7 +75,8 @@ isRetailer: any = null;
 
 
   signOut() {
-    this.authservice.signOut();
-  }
-
+    this.gplus.logout().then(() => {
+      this.authservice.signOut();
+    });
+}
 }

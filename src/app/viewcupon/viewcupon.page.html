@@ -104,8 +104,10 @@
            
           </ion-list>
           </div>   
-          
-          <ion-button expand="full" (click)="saveTodo()" *ngIf="!usercoupon">
+          <ion-button expand="full"  disabled *ngIf="!usercoupon && limmitend ">
+              You can only purchase the following items ones
+            </ion-button>
+          <ion-button expand="full" (click)="saveTodo()" *ngIf="!usercoupon && !limmitend ">
             Purchase Coupon Now
           </ion-button>
           <ion-button expand="full" lines='inset' button [routerLink] = "['/qr-pay', todoId]" *ngIf="usercoupon" >

@@ -118,8 +118,14 @@ export class GoogleLoginComponent {
         this.presentToast('hai!! New User');
         this.navCtrl.navigateForward('registerpage');
       } else if (res.usertype === 'Retailer') {
+
+        if (res.approval === 'unapprove') {
+          this.presentToast('Welcome back ' + res.userName);
+          this.navCtrl.navigateForward('watingpage');
+        } else {
         this.presentToast('Welcome back ' + res.userName);
         this.navCtrl.navigateForward('retailerhomepage');
+        }
       } else {
         this.presentToast('Welcome back ' + res.userName);
         this.navCtrl.navigateForward('home');

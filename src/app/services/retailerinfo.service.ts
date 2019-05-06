@@ -20,6 +20,10 @@ export interface Userinfo {
   StoreLocid: string;
   eWallet: number;
   academicYear: string;
+  approval: string;
+  date: any;
+  storeUniqeID: string;
+  storetype: string;
 
 }
 

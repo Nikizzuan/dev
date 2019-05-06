@@ -46,6 +46,18 @@
   font-size: 12px;
 
 }
+.rm{
+    
+
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 10px;
+    
+    color: #A6A6A6;
+    }
 
 .icon1{
   -moz-transform: rotate(45deg);
@@ -113,6 +125,40 @@
             <canvas #valueBarsCanvas></canvas>
           </ion-card-content>
         </ion-card>
+
+        <ion-item>
+            <ion-card>
+          
+           <ion-card-header>
+            <ion-card-title class="rm">Total Sale(Month):</ion-card-title>
+          </ion-card-header>
+    
+           <ion-card-content>
+         <p> <ion-text style="font-size: 10px; color:#756b6d;" >RM    </ion-text>  <ion-text style="font-size: 20px; color:#ff6384;" > {{totaldonationmonth | number : '1.2-2'}}</ion-text></p>
+          </ion-card-content>
+            
+          </ion-card>
+          <ion-card>
+              <ion-card-header>
+                  <ion-card-title class="rm">Total Sale(Year):</ion-card-title>
+                </ion-card-header>
+    
+                <ion-card-content>
+                    <p> <ion-text style="font-size: 10px; color:#756b6d;" >RM    </ion-text>  <ion-text style="font-size: 20px; color:#ff6384;" > {{totaldonationyear | number : '1.2-2'}}</ion-text></p>
+                </ion-card-content>
+                
+          </ion-card>
+          
+          <ion-card>
+    
+              <ion-card-header>
+                  <ion-card-title class="rm">Sale rate({{ months[3].name }}):</ion-card-title>
+                </ion-card-header>
+    
+                <ion-card-content>
+                    <p> <ion-text style="font-size: 10px; color:#756b6d;" >%    </ion-text>  <ion-text style="font-size: 20px; color:#ff6384;" > {{percentageDonation}}</ion-text></p>
+                </ion-card-content>
+          </ion-card></ion-item>
 
     </ion-content>
 

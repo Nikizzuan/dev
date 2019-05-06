@@ -28,6 +28,15 @@
  
     <ion-content class="card-background-page">
 
+      <ion-item>
+        <ion-label>Choose Retailer</ion-label>
+        <ion-select [(ngModel)]="Retialer" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" (ionChange)="optionsFn()" >
+            <ion-select-option    value="All"  >All</ion-select-option>
+          <ion-select-option  *ngFor="let item of comboxarray"  [value]="{id: item.id, storeName: item.storeName}"  >{{item.storeName}}</ion-select-option>
+  
+        </ion-select>
+      </ion-item>
+
       <ion-card *ngFor="let item of todos">
       
         <img src="../assets/img/retailercupon3.png"/>

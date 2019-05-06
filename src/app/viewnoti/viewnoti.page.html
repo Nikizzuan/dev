@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="end">
+          <ion-button  (click)="goBack()">
+           Back
+           </ion-button>
+        
+          </ion-buttons>
+
+    <ion-title>Notification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+   
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>System Administrator</ion-card-subtitle>
+      <ion-card-title>{{notification.title}}</ion-card-title>
+    </ion-card-header>
+
+   <br>
+   <br>
+   <br>
+   <br>
+   
+ 
+  <ion-card-content>
+      {{notification.message}}
+
+      
+      <br>
+      <br>
+      <br>
+
+      <p>
+          <sub > date : </sub>
+          <sub >{{notification.date | date:'short'}}</sub>
+          </p>
+  </ion-card-content>
+  
+</ion-card>
+
+    
+</ion-content>

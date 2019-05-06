@@ -113,10 +113,11 @@ exports.NotificationRequest = functions.firestore
         
     
 
-    let pagetogo: string ='home';
-    let titleMsg: string ='test from function';
-    let bodyMsg: string ='test';
-    let topic: string ='Users';
+    let pagetogo: string ='viewnoti';
+    let titleMsg: string = event.data()!.title;
+    let bodyMsg: string = event.data()!.message;
+    let topic: string = event.data()!.group;
+    let pageid: string = event.data()!.notificationid;
 
  
 
@@ -132,6 +133,7 @@ exports.NotificationRequest = functions.firestore
       },
   data:{
     landing_page: pagetogo,
+    QrCode: pageid
   },
     }
 
@@ -139,3 +141,104 @@ exports.NotificationRequest = functions.firestore
     return admin.messaging().sendToTopic(topic, payload)
     
 });
+
+exports.RedemptionApprove = functions.firestore
+    .document('request/{approve}')
+    .onCreate(async event => {
+        
+    
+
+    let pagetogo: string ='viewnoti';
+    let titleMsg: string ='E-wallet Redemption Approve';
+    let bodyMsg: string ='Congratulation, Your E-wallet redemption Request has been approve';
+    let retrieverEmail: string = event.data()!.retailerEmail;
+    let pageid: string = event.data()!.notificationid;
+ 
+
+
+
+    const payload = {
+      notification: {
+          title: titleMsg,
+          body: bodyMsg,
+          sound:'default',
+         click_action:'FCM_PLUGIN_ACTIVITY',
+          icon: 'https://goo.gl/Fz9nrQ'
+      },
+  data:{
+    landing_page: pagetogo,
+    QrCode: pageid
+  },
+    }
+
+
+    const db = admin.firestore()
+    const devicesRef = db.collection('devices').where('userId', '==', retrieverEmail)
+
+
+    // get the user's tokens and send notifications
+    const devices = await devicesRef.get();
+
+    let tokens = '';
+
+    // send a notification to each device token
+    devices.forEach(result => {
+      const token = result.data().token;
+
+      tokens = token
+    })
+
+    return admin.messaging().sendToDevice(tokens, payload)
+    
+});
+
+
+exports.AccountApprove = functions.firestore
+    .document('UserInfo/{approve}')
+    .onCreate(async event => {
+        
+    
+
+    let pagetogo: string ='home';
+    let titleMsg: string ='Your Account has been Approve';
+    let bodyMsg: string ='Congratulation and Welcome to MyQrWallet';
+    let retrieverEmail: string = event.data()!.email;
+
+ 
+
+
+
+    const payload = {
+      notification: {
+          title: titleMsg,
+          body: bodyMsg,
+          sound:'default',
+          click_action:'FCM_PLUGIN_ACTIVITY',
+          icon: 'https://goo.gl/Fz9nrQ'
+      },
+  data:{
+    landing_page: pagetogo,
+  },
+    }
+
+
+    const db = admin.firestore()
+    const devicesRef = db.collection('devices').where('userId', '==', retrieverEmail)
+
+
+    // get the user's tokens and send notifications
+    const devices = await devicesRef.get();
+
+    let tokens = '';
+
+    // send a notification to each device token
+    devices.forEach(result => {
+      const token = result.data().token;
+
+      tokens = token
+    })
+
+    return admin.messaging().sendToDevice(tokens, payload)
+    
+});
+

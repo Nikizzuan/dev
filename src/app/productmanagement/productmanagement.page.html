@@ -38,7 +38,7 @@
         <p>RM: {{item.price | number : '1.2-2'}}</p>
         <div slot="end">
           <ion-icon  name="create" lines='inset' button [routerLink] = "['/addproduct', item.id]"></ion-icon>
-          <ion-icon name="trash" (click)="onClick()"></ion-icon>
+          <ion-icon name="trash" (click)="remove(item)"></ion-icon>
         </div>
     </ion-card-content>
 

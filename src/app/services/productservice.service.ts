@@ -12,6 +12,7 @@ export interface Product {
   retailer: string;
   retaileruid: string;
   ischecked: boolean;
+  counter: number;
 
 }
 

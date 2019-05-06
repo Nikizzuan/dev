@@ -26,19 +26,19 @@
   <ion-list lines="full">
 
     <ion-item>
-      <ion-input type="text" placeholder="Voucher Name" [(ngModel)]="todo.CuponName"></ion-input>
+      <ion-input type="text" placeholder="Voucher Name" [(ngModel)]="todo.CuponName" required></ion-input>
     </ion-item>
     
     <ion-item>
         <ion-label fixed>RM :</ion-label>
 
-        <ion-input type="number" placeholder="0.00" [(ngModel)]="todo.Amountalocate"></ion-input>
+        <ion-input type="number" placeholder="0.00" [(ngModel)]="todo.Amountalocate" required></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>Number Of Cuppons:</ion-label>
 
-          <ion-input type="number" placeholder="10" [(ngModel)]="todo.CupponNum"></ion-input>
+          <ion-input type="number" placeholder="10" [(ngModel)]="todo.CupponNum" required ></ion-input>
 
     </ion-item >
 
@@ -54,7 +54,7 @@
     <ion-item>
         <ion-label fixed>Discoun (%):</ion-label>
 
-            <ion-input type="text"  placeholder="30" [(ngModel)]="todo.discount"></ion-input>
+            <ion-input type="number"  placeholder="30" [(ngModel)]="todo.discount" required></ion-input>
     </ion-item>
 
 
@@ -62,7 +62,7 @@
       <ion-label fixed>Term and Condition:</ion-label>
           <ion-textarea  rows="6" cols="20"  placeholder="Rule and Regulation of the voucher" [(ngModel)]="todo.Term"></ion-textarea>
         
-  </ion-item>
+  </ion-item>`
 
   
 
@@ -70,11 +70,14 @@
     <ion-item>
       
       <ion-label fixed>Expire date</ion-label>
-      <ion-datetime displayFormat="MM-DD-YYYY HH:mm" min="2019" max="2020-10-31" [(ngModel)]="todo.Expiredate"></ion-datetime>
+      <ion-datetime displayFormat="MM-DD-YYYY HH:mm" min="2019" max="2020-12-31" [(ngModel)]="Datepicker" required></ion-datetime>
       
     </ion-item>
   
   
   </ion-list>
+  <ion-label *ngIf="error" style="color:red" fixed >{{error}}</ion-label>
+  <br>
+  <ion-label *ngIf="error2" style="color:red" fixed >{{error2}}</ion-label>
 <ion-button expand="full" (click)="saveTodo()">save</ion-button>
 </ion-content>

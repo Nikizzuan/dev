@@ -38,6 +38,20 @@
             <ion-label fixed>Store Name</ion-label>
             <ion-input type="text" [(ngModel)]="user.storeName"></ion-input>
           </ion-item>
+          
+            <ion-item  >
+                <ion-label>Store Type</ion-label>
+                <ion-select [(ngModel)]="user.storetype" placeholder="Select One">
+                  <ion-select-option value="Restaurant">Restaurant</ion-select-option>
+                  <ion-select-option value="Service">Service</ion-select-option>
+                  <ion-select-option value="Shop">Shop</ion-select-option>
+                </ion-select>
+              </ion-item>
+
+            <ion-item>
+                <ion-label fixed>Store ID</ion-label>
+                <ion-input type="text" [(ngModel)]="user.storeUniqeID"></ion-input>
+              </ion-item>
         
         </ion-list>
       <ion-button expand="full" (click)="Nextface()">Set Your Store Location</ion-button>

@@ -10,6 +10,7 @@ import { FcmService } from '../services/fcm.service';
 import { Transaction, TransactionService } from '../services/transaction.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { RetailerinfoService, Userinfo } from '../services/retailerinfo.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Component({
   selector: 'app-retailerhomepage',
@@ -48,7 +49,11 @@ export class RetailerhomepagePage implements OnInit {
   myqrplaner: '',
   StoreLocid: '',
   eWallet: 0,
-  academicYear: ''
+  academicYear: '',
+  storeUniqeID: '',
+  storetype: '',
+  approval: 'unapprove',
+  date: Date.now()
  };
 
 
@@ -64,6 +69,7 @@ authState: any = null;
     private toastCtrl: ToastController,
     private platform: Platform,
     private afAuth: AngularFireAuth,
+    private gplus: GooglePlus,
     private userservice: RetailerinfoService,
     private transcationservice: TransactionService,
     private splashScreen: SplashScreen,
@@ -84,6 +90,11 @@ authState: any = null;
       @ViewChild('valueBarsCanvas') valueBarsCanvas;
       valueBarsChart: any;
 
+      totaldonationmonth = 0;
+      totaldonationlastmonth = 0;
+      totaldonationyear = 0;
+      percentageDonation = 0;
+
 
   ngOnInit() {
 
@@ -103,7 +114,9 @@ authState: any = null;
 
 
   signOut() {
-    this.authservice.signOut();
+     this.gplus.logout().then(() => {
+        this.authservice.signOut();
+      });
   }
 
 
@@ -171,6 +184,11 @@ this. tabsinfo = 1;
 
 
       updateCharts(data) {
+
+        this.loaddonationyear(data);
+        this.loaddonatiomonth(data);
+        this.loaddonatiolastmonth(data);
+        this.calculategrothrate();
         this.totalchartData = data;
         const chartData = this.getReportValues();
               // Update our dataset
@@ -181,6 +199,11 @@ this. tabsinfo = 1;
       }
 
       createCharts(data) {
+
+        this.loaddonationyear(data);
+        this.loaddonatiomonth(data);
+        this.loaddonatiolastmonth(data);
+        this.calculategrothrate();
         this.totalchartData = data;
 // Calculate Values for the Chart
         const chartData = this.getReportValues();
@@ -203,7 +226,7 @@ this. tabsinfo = 1;
               callbacks: {
                 // tslint:disable-next-line:no-shadowed-variable
                 label: function (tooltipItems, data) {
-                  return data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] + ' $';
+                  return 'RM ' + data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] ;
                 }
               }
             },
@@ -224,6 +247,53 @@ this. tabsinfo = 1;
             },
           }
         });
+      }
+
+
+      loaddonationyear(array: any) {
+        this.totaldonationyear = 0;
+        for (let index = 0; index < array.length; index++) {
+            this.totaldonationyear =  this.totaldonationyear + array[index].amount;
+
+        }
+
+      }
+
+
+      loaddonatiomonth(array: any) {
+        this.totaldonationmonth = 0;
+        for (let index = 0; index < array.length; index++) {
+
+            if (array[index].month === new Date().getMonth()) {
+              this.totaldonationmonth = this.totaldonationmonth + array[index].amount;
+            }
+        }
+
+      }
+
+      loaddonatiolastmonth(array: any) {
+        this.totaldonationlastmonth = 0;
+        for (let index = 0; index < array.length; index++) {
+
+            if (array[index].month === (new Date().getMonth() - 1)) {
+              this.totaldonationlastmonth = this.totaldonationlastmonth + array[index].amount;
+            }
+        }
+
+      }
+
+      calculategrothrate() {
+
+        if (this.totaldonationlastmonth > 0) {
+          this.percentageDonation = this.totaldonationmonth - this.totaldonationlastmonth;
+          this.percentageDonation  =  this.percentageDonation / this.totaldonationlastmonth;
+          this.percentageDonation = this.percentageDonation  * 100;
+        } else {
+          this.percentageDonation = 0;
+        }
+
+
+
       }
 
 

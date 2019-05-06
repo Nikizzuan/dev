@@ -1,4 +1,17 @@
 <style>
+
+.title{
+  font-size: 16px;
+
+}
+.messagetext{
+  font-size: 12px;
+
+}
+.item-note{
+  font-size: 12px;
+
+}
     .rm{
         
     
@@ -55,39 +68,79 @@
   </ion-toolbar>
 </ion-header>
 <ion-content >
-    <ion-label class="labeltest">Your Account Balance</ion-label>
+    <ion-label class="labeltest">Balance </ion-label>
     <ion-card>
-    <ion-item> <p ><ion-text class="rm" color="primary"><sub>RM : </sub></ion-text> <ion-text style="font-size: 23px;" color="primary"><sub>{{userinfos.eWallet}}</sub></ion-text>
+    <ion-item> <p ><ion-text class="rm" color="primary"><sub>RM : </sub></ion-text> <ion-text style="font-size: 23px;" color="primary"><sub>{{balance}}</sub></ion-text>
       </p>
       </ion-item>
     </ion-card>
-    <ion-label class="labeltest" >Amount to pay</ion-label>
+    
+
+    <ion-label class="labeltest" >Retailer</ion-label>
+    <ion-card>
+  
+      <ion-item >
+        <ion-label>Choose Retailer</ion-label>
+        <ion-select [(ngModel)]="Retialer" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" (ionChange)="optionsFn()" >
+          <ion-select-option  *ngFor="let item of comboxarray"  [value]="{id: item.id, email: item.email}"  >{{item.storeName}}</ion-select-option>
+  
+        </ion-select>
+      </ion-item>
+       
+      <ion-item *ngIf="expression">
+        <ion-label>{{todo.Retailer}}</ion-label>
+      </ion-item>
+      </ion-card>
+      <ion-label class="labeltest" >Amount to pay</ion-label>
     <ion-card>
     
-      <ion-item>
-          <ion-label class="rm2" >RM </ion-label>
-          <ion-input type="number" [(ngModel)]="qrdata.BillDue" placeholder="Enter Your Amount"></ion-input>
-    </ion-item>
+ 
+     
+
+    <ion-list  *ngIf="voucherID">
+      <ion-item *ngFor="let item of todo.ItemList; index as i">
+    
+          <ion-thumbnail item-start>
+      <img  [src]="item.img">
+        </ion-thumbnail>
+       
+        <ion-label text-wrap>
+            <ion-text class="title" color="primary">
+              <p class="title" >{{item.title}}</p>
+            </ion-text>
+            <p class="messagetext">RM: {{item.price | number : '1.2-2'}}</p>
+          </ion-label>
+
+          <ion-icon  name="add-circle" slot="end" (click)="add(item.price,item.counter,i)"></ion-icon>
+          <ion-text  >{{item.counter}}</ion-text>
+          <ion-icon  name="remove-circle" slot="end" (click)="remove(item.price,item.counter,i)"></ion-icon>
+  
+      </ion-item>
+    </ion-list >
+
+    
+    <ion-item *ngIf="!voucherID">
+        <ion-label class="rm2" >RM </ion-label>
+        <ion-input type="number" [(ngModel)]="qrdata.BillDue" placeholder="Enter Your Amount"></ion-input>
+  </ion-item>
 
   </ion-card>
-  <ion-label class="labeltest" >Retailer</ion-label>
-  <ion-card>
 
-    <ion-item>
-      <ion-label>Choose Retailer</ion-label>
-      <ion-select [(ngModel)]="Retialer" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" (ionChange)="optionsFn()" >
-        <ion-select-option  *ngFor="let item of comboxarray"  [value]="{id: item.id, email: item.email}"  >{{item.storeName}}</ion-select-option>
-
-      </ion-select>
-    </ion-item>
-     
-    </ion-card>
     
   
 
 </ion-content>
 <ion-footer>
+  <ion-item *ngIf="voucherID">
+      <ion-card-subtitle>Discount : {{todo.discount}} % 
+
+         </ion-card-subtitle>  <ion-button  slot="end" (click)="calculate()" >Calculate total</ion-button>
+  </ion-item>
+    
+  <br>
+  <ion-card-title>Total Check Out Amount : {{qrdata.BillDue | number : '1.2-2'}}</ion-card-title>
   
+
       <ion-button  expand="full" (click)="requestpay()" >
           Request Qr Pay From Retailer
         </ion-button>

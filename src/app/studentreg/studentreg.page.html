@@ -11,26 +11,24 @@
 
         <ion-item>
           <ion-label fixed>Your Name</ion-label>
-          <ion-input type="text" [(ngModel)]="user.userName"></ion-input>
+          <ion-input type="text" required  placeholder="Chan" [(ngModel)]="user.userName"></ion-input>
         </ion-item>
       
         <ion-item>
           <ion-label fixed>Matric number</ion-label>
-          <ion-input type="number" [(ngModel)]="user.matricNum"></ion-input>
+          <ion-input type="number" required  maxlength="6" placeholder="123456" [(ngModel)]="user.matricNum"></ion-input>
         </ion-item>
 
+
         <ion-item>
-          <ion-label fixed>Academic Year</ion-label>
-          <ion-input type="number" [(ngModel)]="user.academicYear"></ion-input>
+          <ion-label fixed>USM Email</ion-label>
+          <ion-input type="text" required  placeholder="example@usm.my/example@student.usm.my"  [(ngModel)]="user.email"></ion-input>
         </ion-item>
-      
-        <ion-item>
-          <ion-label fixed>Student Email</ion-label>
-          <ion-input type="text" [(ngModel)]="user.email"></ion-input>
-        </ion-item>
-      
+        <ion-label *ngIf="error" style="color:red" fixed >{{error}}</ion-label>
+        <br>
+        <ion-label *ngIf="error2" style="color:red" fixed >{{error2}}</ion-label>
       </ion-list>
-      <ion-button expand="full" (click)="saveUser()">save</ion-button>
+      <ion-button expand="full" placeholder=""  (click)="saveUser()">save</ion-button>
 </ion-content>
 
 

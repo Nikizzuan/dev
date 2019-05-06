@@ -71,7 +71,7 @@ export class FcmService {
             userId: res.email
           };
 
-          return devicesRef.doc(token).set(data);
+          return devicesRef.doc(data.userId).set(data);
         });
       }
     });

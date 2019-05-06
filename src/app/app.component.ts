@@ -75,8 +75,8 @@ export class AppComponent implements OnInit {
       icon: 'person'
     },
     {
-      title: 'Add Coupon',
-      url: '/addcupon',
+      title: 'Manage Voucher',
+      url: '/cuponstat',
       icon: 'add-circle-outline'
 
     },
@@ -98,12 +98,6 @@ export class AppComponent implements OnInit {
     {
       title: 'Notification',
       url: '/list',
-      icon: 'notifications'
-    }
-    ,
-    {
-      title: 'test',
-      url: '/test',
       icon: 'notifications'
     }
   ];
@@ -201,20 +195,31 @@ export class AppComponent implements OnInit {
         if (res.usertype === 'Student' ) {
           this.fcm.subscribeToTopic('All');
           this.fcm.subscribeToTopic('Student');
-          this.fcm.subscribeToTopic('stusdentStaff');
-          this.fcm.subscribeToTopic('studentRetailer');
+          this.fcm.unsubscribeFromTopic('Retailer');
+          this.fcm.unsubscribeFromTopic('Staff');
+        //  this.fcm.subscribeToTopic('stusdentStaff');
+       //   this.fcm.subscribeToTopic('studentRetailer');
+          this.fcm.subscribeToTopic('Student');
           this.appPages = this.studentPage;
         } else if (res.usertype === 'Retailer' ) {
+          if (res.approval === 'unapprove') {
+          } else {
           this.fcm.subscribeToTopic('All');
+          this.fcm.unsubscribeFromTopic('Student');
           this.fcm.subscribeToTopic('Retailer');
-          this.fcm.subscribeToTopic('RetailerStaff');
-          this.fcm.subscribeToTopic('studentRetailer');
+          this.fcm.unsubscribeFromTopic('Staff');
+     //     this.fcm.subscribeToTopic('RetailerStaff');
+      //    this.fcm.subscribeToTopic('studentRetailer');
           this.appPages = this.retailerPage;
+        }
+
         } else if (res.usertype === 'Staff' ) {
           this.fcm.subscribeToTopic('All');
-        this.fcm.subscribeToTopic('Staff');
-        this.fcm.subscribeToTopic('stusdentStaff');
-        this.fcm.subscribeToTopic('StaffRetailer');
+          this.fcm.unsubscribeFromTopic('Student');
+          this.fcm.unsubscribeFromTopic('Retailer');
+          this.fcm.subscribeToTopic('Staff');
+     //   this.fcm.subscribeToTopic('stusdentStaff');
+       // this.fcm.subscribeToTopic('StaffRetailer');
           this.appPages = this.studentPage;
       }
       }

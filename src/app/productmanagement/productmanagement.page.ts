@@ -4,6 +4,7 @@ import { Product, ProductserviceService } from '../services/productservice.servi
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Component({
   selector: 'app-productmanagement',
@@ -27,6 +28,7 @@ authState: any = null;
   constructor(private authservice: AuthService,
     private productservice: ProductserviceService,
     private afAuth: AngularFireAuth,
+    private gplus: GooglePlus,
     private navctrl: NavController) { }
 
   ngOnInit() {
@@ -51,9 +53,10 @@ authState: any = null;
 
 
   signOut() {
-    this.authservice.signOut();
-  }
-
+    this.gplus.logout().then(() => {
+      this.authservice.signOut();
+    });
+}
 
   addproduct() {
   this.navctrl.navigateForward('addproduct');

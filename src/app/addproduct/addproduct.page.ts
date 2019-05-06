@@ -10,6 +10,10 @@ import { RetailerinfoService } from '../services/retailerinfo.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { UploadserviceService } from '../services/uploadservice.service';
+import { Crop } from '@ionic-native/crop/ngx';
 
 
 @Component({
@@ -31,18 +35,26 @@ authState: any = null;
     price: '',
     retailer: '',
     ischecked: false,
-    retaileruid: ''
+    retaileruid: '',
+    counter: 0
  };
 
+ finalimage: any = null;
+
  prductId = null;
+  toastCtrl: any;
 
   constructor( private route: ActivatedRoute,
      private productService: ProductserviceService,
-     public camera: Camera,
+    // public camera: Camera,
      private file: File,
      private userservice: RetailerinfoService,
     private afAuth: AngularFireAuth,
-    private navctrl: NavController) { }
+    private navctrl: NavController,
+    private webview: WebView,
+    public cropService: Crop,
+    private uploadservice: UploadserviceService,
+    private imagePicker: ImagePicker) { }
 
   ngOnInit() {
 
@@ -69,7 +81,6 @@ authState: any = null;
 
   });
 
-
   }
 
 
@@ -84,10 +95,13 @@ authState: any = null;
 
     if (this.prductId) {
       this.productService.UpdateProduct(this.Product, this.prductId).then(() => {
+
+
         this. goBack();
       });
     } else {
        this.productService.addProduct(this.Product).then(() => {
+
          this. goBack();
        });
     }
@@ -96,100 +110,88 @@ authState: any = null;
 
   // camera
 
-  async pickImage() {
-    const options: CameraOptions = {
-      quality: 80,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-    try {
-      const cameraInfo = await this.camera.getPicture(options);
-      const blobInfo = await this.makeFileIntoBlob(cameraInfo);
-      const uploadInfo: any = await this.uploadToFirebase(blobInfo);
-
-      alert('File Upload Success ' + uploadInfo.fileName);
-    } catch (e) {
-      console.log(e.message);
-      alert('File Upload Error ' + e.message);
-    }
-  }
-
-    // FILE STUFF
-    makeFileIntoBlob(_imagePath) {
-      // INSTALL PLUGIN - cordova plugin add cordova-plugin-file
-      return new Promise((resolve, reject) => {
-        let fileName = '';
-        this.file
-          .resolveLocalFilesystemUrl(_imagePath)
-          .then(fileEntry => {
-            const { name, nativeURL } = fileEntry;
-
-            // get the path..
-            const path = nativeURL.substring(0, nativeURL.lastIndexOf('/'));
-            console.log('path', path);
-            console.log('fileName', name);
-
-            fileName = name;
-
-            // we are provided the name, so now read the file into
-            // a buffer
-            return this.file.readAsArrayBuffer(path, name);
-          })
-          .then(buffer => {
-            // get the buffer and make a blob to be saved
-            const imgBlob = new Blob([buffer], {
-              type: 'image/jpeg'
-            });
-            console.log(imgBlob.type, imgBlob.size);
-            resolve({
-              fileName,
-              imgBlob
-            });
-          })
-          .catch(e => reject(e));
-      });
-    }
-
-     /**
-   *
-   * @param _imageBlobInfo
-   */
-  uploadToFirebase(_imageBlobInfo) {
-    console.log('uploadToFirebase');
-    return new Promise((resolve, reject) => {
-      const fileRef = firebase.storage().ref('images/' + _imageBlobInfo.fileName);
-
-      // save path to firestore
-      this.Product.img = 'images/' + _imageBlobInfo.fileName;
-
-      const uploadTask = fileRef.put(_imageBlobInfo.imgBlob);
-
-      uploadTask.on(
-        'state_changed',
-        (_snapshot: any) => {
-          console.log(
-            'snapshot progess ' +
-              (_snapshot.bytesTransferred / _snapshot.totalBytes) * 100
-          );
-        },
-        _error => {
-          console.log(_error);
-          reject(_error);
-        },
-        () => {
-          // completion...
-          resolve(uploadTask.snapshot);
-        }
-      );
-    });
-  }
 
   goBack() {
 
     this.navctrl.goBack();
 
   }
+
+  // camera v2
+
+  openImagePicker() {
+    this.imagePicker.hasReadPermission().then(
+      (result) => {
+        if (result === false) {
+          // no callbacks required as this opens a popup which returns async
+          this.imagePicker.requestReadPermission();
+        } else if (result === true) {
+          this.imagePicker.getPictures({
+            maximumImagesCount: 1,
+            outputType: 1
+          }).then(
+            (results) => {
+              for (let i = 0; i < results.length; i++) {
+                this.Product.img =  'data:image/jpeg;base64,' +  results[i];
+              }
+            }, (err) => console.log(err)
+          );
+        }
+      }, (err) => {
+        console.log(err);
+      });
+    }
+
+    openImagePickerCrop() {
+      this.imagePicker.hasReadPermission().then(
+        (result) => {
+          if (result === false) {
+            // no callbacks required as this opens a popup which returns async
+            this.imagePicker.requestReadPermission();
+          } else if (result === true) {
+            this.imagePicker.getPictures({
+              maximumImagesCount: 1,
+            //  outputType: 1
+            }).then(
+              (results) => {
+                for (let i = 0; i < results.length; i++) {
+                  this.cropService.crop(results[i], {quality: 75}).then(
+                    newImage => {
+                     /*
+                      newImage = this.webview.convertFileSrc(newImage);
+                      this.uploadservice.encodeImageUri(newImage, function(image64) {
+                        this.finalimage =  'data:image/jpeg;base64,' + image64;
+                      });
+                      */
+                     this.uploadImageToFirebase(newImage);
+                    },
+                    error => console.error('Error cropping image', error)
+                  );
+                }
+              }, (err) => console.log(err)
+            );
+          }
+        }, (err) => {
+          console.log(err);
+        });
+    }
+
+    uploadImageToFirebase(image) {
+      image = this.webview.convertFileSrc(image);
+
+      // uploads img to firebase storage
+      this.uploadservice.uploadImage(image)
+      .then(photoURL => {
+        this.Product.img  = photoURL;
+        const toast = this.toastCtrl.create({
+          message: 'Image was updated successfully',
+          duration: 3000
+        });
+        toast.present();
+        });
+      }
+
+
 
 
 }

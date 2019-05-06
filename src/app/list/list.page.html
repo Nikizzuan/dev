@@ -39,19 +39,19 @@
   </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item >
-      <ion-icon  [name]="notification.icon" slot="start"></ion-icon>
+  <ion-list *ngFor="let item of notification">
+    <ion-item lines='inset' button [routerLink] = "['/viewnoti', item.id]" >
+      <ion-icon  [name]="item.icon" slot="start"></ion-icon>
       <ion-label text-wrap>
       <ion-text class="title" color="primary">
-        <p class="title" >{{notification.title}}</p>
+        <p class="title" >{{item.title}}</p>
       </ion-text>
-      <p class="messagetext">{{notification.message}}</p>
+      <p class="messagetext">{{item.message}}</p>
      
     </ion-label>
       
       <div  class="item-note " slot="end">
-        {{notification.date  | date:'short' }}
+        {{item.date  | date:'short' }}
       </div>
 
       

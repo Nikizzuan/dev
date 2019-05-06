@@ -5,8 +5,11 @@ import { AuthService } from '../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, of } from 'rxjs';
 import { ModalController, NavController } from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { LocationSelectPage } from '../location-select/location-select.page';
+import { FcmService } from '../services/fcm.service';
+import { FCM } from '@ionic-native/fcm/ngx';
 declare var google;
 @Component({
   selector: 'app-retailerreg',
@@ -14,6 +17,9 @@ declare var google;
   styleUrls: ['./retailerreg.page.scss'],
 })
 export class RetailerregPage  {
+
+  private loginForm: FormGroup;
+  loginError: string;
 
   user: Userinfo = {
     userName: '',
@@ -28,7 +34,11 @@ export class RetailerregPage  {
     myqrplaner: 'true',
     StoreLocid: '',
     eWallet: 0,
-    academicYear: ''
+    academicYear: '',
+    storeUniqeID: '',
+    storetype: '',
+    approval: 'unapprove',
+    date: Date.now()
 };
 
 // maps
@@ -48,7 +58,17 @@ userauth: Observable<firebase.User>;
 authState: any = null;
 
   constructor(private userservice: RetailerinfoService, private route: ActivatedRoute, private authservice: AuthService,
-    public zone: NgZone, private afAuth: AngularFireAuth, public modalCtrl: ModalController, public navCtrl: NavController ) {
+    public zone: NgZone, private afAuth: AngularFireAuth, public modalCtrl: ModalController, public navCtrl: NavController,
+    private fcm2: FcmService,  fb: FormBuilder,   private fcm: FCM    ) {
+
+
+/*
+      this.loginForm = fb.group({
+        email: ['', Validators.compose([Validators.required, Validators.email])],
+        password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
+         });
+*/
+
 
     this.tabsinfo = null;
     // maps
@@ -74,9 +94,25 @@ authState: any = null;
 
 
   saveUser() {
+
+
+ /*   const data = this.loginForm.value;
+    */
+    if (this.user.storetype === '') {
+    return;
+    }
+
+
+
     this.userservice.addUser(this.user).then(() => {
+      this.fcm2.getToken();
+      this.fcm.subscribeToTopic('All');
+      this.fcm.unsubscribeFromTopic('Student');
+      this.fcm.subscribeToTopic('Retailer');
+      this.fcm.unsubscribeFromTopic('Staff');
+      this.navCtrl.navigateForward('watingpage');
     });
-    this.navCtrl.navigateForward('retailerhomepage');
+
     /* if (this.userID) {
       this.userservice.UpdateUser(this.user, this.userID).then(() => {
       });
@@ -87,6 +123,10 @@ authState: any = null;
     }
     */
   }
+
+
+
+
 
   Nextface() {
     this.user.email = this.authservice.currentUserEmail;

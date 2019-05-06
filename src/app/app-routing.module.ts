@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'cuponstore', loadChildren: './cuponstore/cuponstore.module#CuponstorePageModule' },
   { path: 'registerpage', loadChildren: './registerpage/registerpage.module#RegisterpagePageModule' },
   { path: 'loginpage', loadChildren: './loginpage/loginpage.module#LoginpagePageModule' },
-  { path: 'studentreg', loadChildren: './studentreg/studentreg.module#StudentregPageModule' },
+  { path: 'studentreg/:id', loadChildren: './studentreg/studentreg.module#StudentregPageModule' },
   { path: 'staffreg', loadChildren: './staffreg/staffreg.module#StaffregPageModule' },
   { path: 'retailerreg', loadChildren: './retailerreg/retailerreg.module#RetailerregPageModule' },
   { path: 'LocationSelect', loadChildren: './location-select/location-select.module#LocationSelectPageModule' },
@@ -37,7 +37,12 @@ const routes: Routes = [
   { path: 'addproduct/:id', loadChildren: './addproduct/addproduct.module#AddproductPageModule' },
   { path: 'viewcupon/:id/:usercoupon', loadChildren: './viewcupon/viewcupon.module#ViewcuponPageModule' },
   { path: 'purchasedetail/:id', loadChildren: './purchasedetail/purchasedetail.module#PurchasedetailPageModule' },
-  { path: 'qrscan/:id', loadChildren: './qrscan/qrscan.module#QrscanPageModule' },  { path: 'test', loadChildren: './test/test.module#TestPageModule' }
+  { path: 'qrscan/:id', loadChildren: './qrscan/qrscan.module#QrscanPageModule' },
+  { path: 'test', loadChildren: './test/test.module#TestPageModule' },
+  { path: 'viewnoti/:id', loadChildren: './viewnoti/viewnoti.module#ViewnotiPageModule' },
+  { path: 'watingpage', loadChildren: './watingpage/watingpage.module#WatingpagePageModule' },
+  { path: 'cuponstat', loadChildren: './cuponstat/cuponstat.module#CuponstatPageModule' }
+
 
 
 

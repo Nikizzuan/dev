@@ -110,11 +110,11 @@
     
     <ion-content class="card-background-page" *ngIf="!tabsinfo" >
 
-        <ion-card *ngFor="let item of viewArray; let i = index" >
+        <ion-card *ngFor="let item of viewArray; index as i" >
         
           <img src="../assets/img/retailercupon3.png"/>
           <div class="card-title"> {{ item.CuponName }}</div>
-          <div class="card-amount"> RM {{ item.usersCouponID[i].voucherBalance | number : '1.2-2' }}</div>
+          <div class="card-amount"> RM {{ item.usersCouponID[0].voucherBalance | number : '1.2-2' }}</div>
           <div class="card-subtitle">Expiration Date : {{ item.Expiredate | date:'short' }}</div>
         
           <ion-item color="warning" >

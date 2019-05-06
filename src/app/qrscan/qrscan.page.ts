@@ -55,7 +55,11 @@ export class QrscanPage implements OnInit {
       myqrplaner: '',
       StoreLocid: '',
       eWallet: 0,
-      academicYear: ''
+      academicYear: '',
+      storeUniqeID: '',
+      storetype: '',
+      approval: 'unapprove',
+      date: Date.now()
      };
 
      retailerinfo: Userinfo = {
@@ -71,7 +75,11 @@ export class QrscanPage implements OnInit {
       myqrplaner: '',
       StoreLocid: '',
       eWallet: 0,
-      academicYear: ''
+      academicYear: '',
+      storeUniqeID: '',
+      storetype: '',
+      approval: 'unapprove',
+      date: Date.now()
      };
 
      voucher: Todo;

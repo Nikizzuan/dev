@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 export interface UserCoupon {
   CuponName: string;
   Retailer: string;
-  Expiredate: string;
+  Expiredate: any;
   CupponType: string;
   Amountalocate: string;
   CupponNum: string;
@@ -28,7 +28,7 @@ export interface UserCoupon {
 export class BuycouponService {
 
   userID: any;
-usercurr: any
+usercurr: any;
 // modal: any;
 userauth: Observable<firebase.User>;
 authState: any = null;
@@ -39,15 +39,15 @@ authState: any = null;
   private userCuopon: Observable<UserCoupon[]>;
 
 
-  constructor(db: AngularFirestore, 
-    private authservice: AuthService, 
-    private afAuth: AngularFireAuth) { 
+  constructor(db: AngularFirestore,
+    private authservice: AuthService,
+    private afAuth: AngularFireAuth) {
 
 
       this.userCuoponCollections = db.collection<UserCoupon>('UserCoupon');
 
       this.userCuopon = this.userCuoponCollections.snapshotChanges().pipe(map(action => {
-  
+
         return action.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;

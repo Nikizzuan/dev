@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { RetailerinfoService, Userinfo } from '../services/retailerinfo.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 declare var google: any;
 
 @Component({
@@ -18,9 +19,11 @@ autocomplete: any;
 autocompleteItems: any;
 geocoder: any;
 markers: any[];
+iconurl: string;
 
 
   constructor(private authservice: AuthService,
+    private gplus: GooglePlus,
     public zone: NgZone,
     private userservice: RetailerinfoService) {
 
@@ -54,7 +57,13 @@ markers: any[];
       user.forEach(element => {
 
           if (element.usertype === 'Retailer') {
+
+
+
+              this.iconurl = '../assets/img/Shop.png';
               this.addmarker(element.StoreLocid);
+
+
           }
 
       });
@@ -76,7 +85,7 @@ markers: any[];
           };
           const marker = new google.maps.Marker({
             position: results[0].geometry.location,
-            icon: { url : '../assets/img/restoran.png' },
+            icon: { url : this.iconurl  },
             animation: google.maps.Animation.BOUNCE,
             map: this.map,
           });
@@ -101,8 +110,10 @@ markers: any[];
 
 
 
-  signOut() {
-    this.authservice.signOut();
+    signOut() {
+      this.gplus.logout().then(() => {
+        this.authservice.signOut();
+      });
   }
 
 }

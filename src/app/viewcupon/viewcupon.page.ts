@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { NavController, ToastController } from '@ionic/angular';
 import { Transaction, TransactionService } from '../services/transaction.service';
 import { LocalnotificationService } from '../services/localnotification.service';
+import { AdminaccountService, Transaction2 } from '../services/adminaccount.service';
 
 @Component({
   selector: 'app-viewcupon',
@@ -27,7 +28,8 @@ export class ViewcuponPage implements OnInit {
     ItemList: '',
     discount: 0,
     Term: '',
-    usersCouponID: []
+    usersCouponID: [],
+    expire: 'false'
 };
 
 transaction:  Transaction = {
@@ -44,6 +46,22 @@ transaction:  Transaction = {
 
 };
 
+
+adminacc:  Transaction2 = {
+  icon: 'arrow-up',
+  icon2: 'add',
+  title: '',
+  amount: 0,
+  date: Date.now(),
+  expense:  true,
+  month: 0,
+  username: '',
+  retailername: '',
+  totalbalance: 0
+
+
+};
+
 userinfos: Userinfo = {
   userName: '',
   matricNum: '',
@@ -57,11 +75,17 @@ userinfos: Userinfo = {
   myqrplaner: '',
   StoreLocid: '',
   eWallet: 0,
-  academicYear: ''
+  academicYear: '',
+  storeUniqeID: '',
+  storetype: '',
+  approval: 'unapprove',
+  date: Date.now()
  };
 
 todoId = null;
 usercoupon = null;
+limmitend = null;
+ADMINID = 'TMFUWOirDNNFlLFmEVSvxlQwiju1';
 
 // user part
 
@@ -76,7 +100,8 @@ authState: any = null;
     private navctrl: NavController,
     private localnoti: LocalnotificationService,
     private transcationservice: TransactionService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private adminservice: AdminaccountService
     ) { }
 
   ngOnInit() {
@@ -120,32 +145,58 @@ authState: any = null;
   loadTodo() {
     this.todoService.getTodo(this.todoId).subscribe( res => {
       this.todo = res;
+      if (this.usercoupon === 'true') {
+
+      } else {
+
+        for (let index = 0; index < this.todo.usersCouponID.length ; index++)  {
+          if (this.todo.usersCouponID[index].voucherUserId === this.userID ) {
+            this.limmitend = 'true';
+          }
+        }
+      }
+
+
     });
   }
 
   saveTodo() {
 
-
-    this.todo.CupponNum = this.todo.CupponNum - 1;
-
-    this.todo.usersCouponID.push({
-      voucherUserId: this.userID,
-      voucherBalance: this.todo.Amountalocate});
+ // const RemainTime = new Date(this.todo.Expiredate - Date.now()).getMinutes();
+ const RemainTime = this.todo.Expiredate;
+   // expiretime
+const indextoput = this.todo.usersCouponID.length;
   console.log(this.todo.usersCouponID);
 if ( this.userinfos.eWallet >= this.todo.Amountalocate) {
+
+  this.todo.CupponNum = this.todo.CupponNum - 1;
+
+  this.todo.usersCouponID.push({
+    voucherUserId: this.userID,
+    voucherBalance: this.todo.Amountalocate,
+    voucherindex: this.todo.usersCouponID.length
+  });
+
+    if ( this.todo.CupponNum === 0 ) {
+      this.todo.expire = 'true';
+    }
 
   if (this.buy( this.todo.Amountalocate ) === true) {
     if (this.todoId) {
       this.todoService.Updatetod(this.todo, this.todoId).then(() => {
-        this.localnoti.scheduleNotificationUser(1, 20, 'Donation', this.todoId , this.todo.usersCouponID.lenght ,
+        this.localnoti.scheduleNotificationUser( Date.now(), RemainTime - 43200000, 'notifed', this.todoId, this.userID , indextoput ,
+        'Voucher Expire', 'Your voucher will be expire in 12 hours ');
+        this.localnoti.scheduleNotificationUser( Date.now(), RemainTime, 'Donation', this.todoId, this.userID , indextoput ,
         'Voucher Expire', 'Your voucher expire will be donate to cahrity to avoid waste');
-        this.goBack();
+        this.navctrl.navigateForward('home');
       });
     } else {
-       this.todoService.addTodo(this.todo).then(() => {
-        this.localnoti.scheduleNotificationUser(1, 20, 'Donation', this.todoId , this.todo.usersCouponID.lenght ,
+       this.todoService.addTodo(this.todo, this.todoId).then(() => {
+        this.localnoti.scheduleNotificationUser( Date.now(),  RemainTime - 43200000, 'notifed', this.todoId, this.userID , indextoput ,
+        'Voucher Expire', 'Your voucher will be expire in 12 hours ');
+        this.localnoti.scheduleNotificationUser( Date.now(), RemainTime, 'Donation', this.todoId, this.userID , indextoput ,
         'Voucher Expire', 'Your voucher expire will be donate to cahrity to avoid waste');
-        this.goBack();
+        this.navctrl.navigateForward('home');
        });
     }
   }
@@ -185,6 +236,9 @@ if ( this.userinfos.eWallet >= this.todo.Amountalocate) {
 
     if (this.userID) {
       this.transcationservice.addtransaction(this.transaction).then(() => {
+        // tslint:disable-next-line:max-line-length
+      //  this.addaccountinfo(this.transaction.amount, this.userinfos.userName + 'Has Buy a voucher with the system for RM ' + this.transaction.amount );
+
       });
     } else {
 
@@ -206,5 +260,29 @@ private async presentToast(message) {
   });
   toast.present();
 }
+
+
+addaccountinfo(amount: number, title: any) {
+  this.adminacc.title = title;
+  this.adminacc.amount = amount;
+  this.adminacc.month = new Date().getMonth();
+  this.adminacc.username = this.userinfos.userName;
+
+  this.adminservice.addtransaction(this.adminacc).then(() => {
+    // this.LOADADMIN();
+
+  });
+
+}
+
+LOADADMIN() {
+  this.userservice.getUser(this.ADMINID).subscribe( res => {
+    this.userinfos = res;
+    this.userinfos.eWallet =  this.userinfos.eWallet + this.transaction.amount;
+    this.userservice.UpdateUser(this.userinfos, this.ADMINID).then(() => {} );
+  });
+}
+
+
 
 }

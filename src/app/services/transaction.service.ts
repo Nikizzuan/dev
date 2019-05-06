@@ -87,7 +87,39 @@ export class TransactionService {
 
   getCollectionoTtran(email: string) {
 
-    this.transactionCollections = this.db.collection<Transaction>('Transaction', ref => ref.where('retailer', '==', email));
+    const order = 'desc';
+
+    this.transactionCollections = this.db.collection<Transaction>('Transaction', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      if (email) { query = query.where('retailer', '==', email); }
+      if (order) { query = query.orderBy('date', order); }
+      return query;
+    });
+
+
+    this.transaction = this.transactionCollections.snapshotChanges().pipe(map(action => {
+
+      return action.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return{ id, ...data };
+      });
+    })
+    );
+    return this.transaction;
+  }
+
+  getCollectionoTtranuser(userid: string) {
+
+    const order = 'desc';
+
+    this.transactionCollections = this.db.collection<Transaction>('Transaction', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      if (userid) { query = query.where('Userid', '==', userid); }
+      if (order) { query = query.orderBy('date', order); }
+      return query;
+    });
+
 
     this.transaction = this.transactionCollections.snapshotChanges().pipe(map(action => {
 

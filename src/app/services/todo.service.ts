@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 export interface Todo {
   CuponName: string;
   Retailer: string;
-  Expiredate: string;
+  Expiredate: any;
   CupponType: string;
   Amountalocate: number;
   CupponNum: number;
@@ -17,6 +17,7 @@ export interface Todo {
   Term: string;
   CreatedAt: number;
   usersCouponID: any;
+  expire: string;
 }
 
 @Injectable({
@@ -55,8 +56,9 @@ export class TodoService {
     return this.todosCollections.doc(id).update(todo);
    }
 
-  addTodo(todo: Todo) {
-    return this.todosCollections.add(todo);
+  addTodo(todo: Todo, id: any) {
+    return this.todosCollections.doc(id).set(todo);
+   // return this.todosCollections.add(todo);
   }
 
   removeTodo(id) {
@@ -64,7 +66,17 @@ export class TodoService {
   }
 
   Oninit() {
-    this.todosCollections = this.db.collection<Todo>('Cupon');
+
+    const order = 'desc';
+    const expire = 'false' ;
+
+    this.todosCollections = this.db.collection<Todo>('Cupon', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      if (expire) { query = query.where('expire', '==', expire); }
+      if (order) { query = query.orderBy('CreatedAt', order); }
+      return query;
+    });
+
 
     this.Cupon = this.todosCollections.snapshotChanges().pipe(map(action => {
 
@@ -76,6 +88,32 @@ export class TodoService {
     })
     );
   }
+
+  Oninit2(uid: any) {
+
+    const order = 'desc';
+    const expire = 'false' ;
+
+    this.todosCollections = this.db.collection<Todo>('Cupon', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      if (uid) { query = query.where('Retailer', '==', uid); }
+      if (expire) { query = query.where('expire', '==', expire); }
+      if (order) { query = query.orderBy('CreatedAt', order); }
+      return query;
+    });
+
+
+    this.Cupon = this.todosCollections.snapshotChanges().pipe(map(action => {
+
+      return action.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return{ id, ...data };
+      });
+    })
+    );
+  }
+
 
 
 }

@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { TodoService, Todo } from '../services/todo.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { ToastController } from '@ionic/angular';
 
 
 // import * as admin from 'firebase-admin';
@@ -34,6 +37,21 @@ export class QrPayPage implements OnInit {
 
    Retialer: any;
 
+   todo: Todo = {
+    CuponName: 'Test cuppon',
+    Expiredate: '',
+    CreatedAt: new Date().getTime(),
+    Retailer: '',
+    CupponType: '',
+    Amountalocate: 0,
+    CupponNum: 0,
+    ItemList: '',
+    discount: 0,
+    Term: '',
+    usersCouponID: [],
+    expire: 'false'
+};
+
    userinfos: Userinfo = {
     userName: '',
     matricNum: '',
@@ -47,23 +65,34 @@ export class QrPayPage implements OnInit {
     myqrplaner: '',
     StoreLocid: '',
     eWallet: 0,
-    academicYear: ''
+    academicYear: '',
+    storeUniqeID: '',
+    storetype: '',
+    approval: 'unapprove',
+    date: Date.now()
+
    };
    userId = null;
    // for userauth
   userauth: Observable<firebase.User>;
   authState: any = null;
+  balance: any;
 
   constructor(private qrrequest: QRrequestService,
     private usersevice: RetailerinfoService,
     private afAuth: AngularFireAuth,
+    private gplus: GooglePlus,
     private route: ActivatedRoute,
+    private toastCtrl: ToastController,
+    private todoService: TodoService,
     private authservice: AuthService) { }
 
   ngOnInit() {
    // get all retailer
 
    this.voucherID = this.route.snapshot.params['id'];
+
+
    this.usersevice.getRetailers().subscribe( res => {
     this.comboxarray = res;
   });
@@ -79,17 +108,56 @@ export class QrPayPage implements OnInit {
     }
   });
 
+
+
   }
 
   loadTodo() {
     this.usersevice.getUser(this.userId).subscribe( res => {
       this.userinfos = res;
 
+      if (this.voucherID) {
+
+        this.loadvoucher();
+      } else {
+          this.balance = this.userinfos.eWallet;
+
+      }
+
+
+
+    });
+  }
+
+  loadvoucher() {
+    this.todoService.getTodo(this.voucherID).subscribe( res => {
+      this.todo = res;
+
+      if (this.voucherID) {
+
+        for (let index = 0; index < this.todo.usersCouponID.length ; index++)  {
+          if (this.todo.usersCouponID[index].voucherUserId === this.userId ) {
+
+        this.balance = this.todo.usersCouponID[index].voucherBalance;
+
+      }
+    }
+
+
+      }
     });
   }
 
 
    requestpay () {
+     if (this.qrdata.BillDue > this.balance) {
+      this.presentToast('insufficient balance');
+
+     } else {
+
+      if (this.qrdata.RetailerEmail === '') {
+        this.presentToast('please Choose a retailer');
+      } else {
     this.qrdata.CustomerEmail = this.userinfos.email;
     this.qrdata.CustomerName = this.userinfos.userName;
     this.qrdata.RequestID =  this.qrdata.QrStatus + Date.now();
@@ -100,8 +168,8 @@ export class QrPayPage implements OnInit {
 
     this.qrrequest.addQrdata(this.qrdata).then(() => {
     });
-
-
+  }
+  }
   }
 
   public optionsFn(): void {
@@ -113,8 +181,52 @@ export class QrPayPage implements OnInit {
   }
 
   signOut() {
-    this.authservice.signOut();
+    this.gplus.logout().then(() => {
+      this.authservice.signOut();
+    });
+}
+  addbill(val: any) {
+    this.qrdata.BillDue = this.qrdata.BillDue + (val - (this.todo.discount / 100 * val) );
   }
 
+  add(price: number, counter: number, arrayindex: number) {
+     console.log(price);
+     console.log(counter);
+     console.log(arrayindex);
+     this.qrdata.BillDue = 0;
+     counter = counter + 1;
+      this.todo.ItemList[arrayindex].counter = counter;
+   //  this.qrdata.BillDue = this.qrdata.BillDue + (counter * price);
+  }
 
+  remove(price: number, counter: number, arrayindex: number) {
+    console.log(price);
+    console.log(counter);
+
+    if ( this.todo.ItemList[arrayindex].counter > 0) {
+      counter = counter - 1;
+      this.todo.ItemList[arrayindex].counter = counter;
+      this.qrdata.BillDue = 0;
+    }
+
+  //  this.todo.ItemList[arrayindex] = this.todo.ItemList[arrayindex]  - 1;
+  //  this.qrdata.BillDue = this.qrdata.BillDue + (counter * price);
+ }
+
+ calculate() {
+   let total = 0;
+   for (let index = 0; index < this.todo.ItemList.length; index++) {
+    total = total + (this.todo.ItemList[index].counter * this.todo.ItemList[index].price);
+   }
+   this.qrdata.BillDue = total - (this.todo.discount / 100 * total) ;
+
+ }
+
+ private async presentToast(message) {
+  const toast = await this.toastCtrl.create({
+    message,
+    duration: 3000
+  });
+  toast.present();
+}
 }

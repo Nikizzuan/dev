@@ -63,18 +63,19 @@
   <ion-content >
       <ion-label class="labeltest">Your Account Balance</ion-label>
       <ion-card>
-      <ion-item> <p ><ion-text class="rm" color="primary"><sub>RM : </sub></ion-text> <ion-text style="font-size: 23px;" color="primary"><sub>00.00</sub></ion-text>
+      <ion-item> <p ><ion-text class="rm" color="primary"><sub>RM : </sub></ion-text> <ion-text style="font-size: 23px;" color="primary"><sub>{{userinfos.eWallet}}</sub></ion-text>
         </p>
         </ion-item>
+       
       </ion-card>
-
+      <ion-label  style="color:red" *ngIf="!available">Please wait for your previous request to be approve first!!</ion-label>
       
     
   
   </ion-content>
   <ion-footer>
-    
-        <ion-button  expand="full" (click)="onClick()" >
+     
+        <ion-button *ngIf="available" expand="full" (click)="saveProduct()" >
             Request E-Wallet Redemption
           </ion-button>
   

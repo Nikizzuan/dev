@@ -9,6 +9,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NavController } from '@ionic/angular';
+import { LocalnotificationService } from '../services/localnotification.service';
 
 
 @Component({
@@ -20,8 +21,8 @@ export class AddcuponPage implements OnInit {
 
 todo: Todo = {
     CuponName: '',
-    Expiredate: '',
-    CreatedAt: new Date().getTime(),
+    Expiredate: 0,
+    CreatedAt:  Date.now(),
     Retailer: '',
     CupponType: 'retailer',
     Amountalocate: null,
@@ -29,7 +30,9 @@ todo: Todo = {
     ItemList: [],
     discount: null,
     Term: '',
-    usersCouponID: []
+    usersCouponID: [],
+    expire: 'false'
+
 };
 
 
@@ -37,6 +40,11 @@ todo: Todo = {
 
 Products: Product[];
 
+error: any = null;
+error2: any = null;
+
+Datepicker: any;
+userId: any;
 // for userauth
 userauth: Observable<firebase.User>;
 authState: any = null;
@@ -49,7 +57,8 @@ todoId = null;
     private productservice: ProductserviceService,
     private userservice: RetailerinfoService,
     private afAuth: AngularFireAuth,
-    private navctrl: NavController) { }
+    private navctrl: NavController,
+    private localnoti: LocalnotificationService) { }
 
   ngOnInit() {
 
@@ -63,7 +72,7 @@ todoId = null;
     this.userauth = this.afAuth.authState;
 
     this.afAuth.auth.onAuthStateChanged(user =>  {
-
+      this.userId = user.uid;
     this.userservice.getUser(user.uid).subscribe( res => {
       this.todo.Retailer = res.storeName;
     });
@@ -118,27 +127,65 @@ todoId = null;
 
   saveTodo() {
 
+
+    this.Datepicker = this.Datepicker.replace('Z', '');
+    this.todo.Expiredate = Date.parse(this.Datepicker);
     for (let index = 0; index < this.Products.length; index++) {
 
+      if (this.Products[index].ischecked === true) {
+          this.todo.ItemList.push(this.Products[index]);
+      }
 
-       if (this.Products[index].ischecked === true) {
-           this.todo.ItemList.push(this.Products[index]);
-       }
+   }
 
+    if (this.todo.Expiredate <  this.todo.CreatedAt) {
+       this.error = 'Please Enter a  valid Date note* date must be more then current date ';
+    } else {
+      this.error = null;
     }
 
+    if (this.todo.ItemList.length  > 0) {
+
+      this.error2 = null;
+    } else {
+
+      this.error2 = 'Please Select at least one product';
+    }
+
+    if (this.error === null &&  this.error2 === null ) {
+
+
+
+
    // this.todo.ItemList = this.Products;
+
+   // get time
+
+ // const RemainTime = new Date(this.todo.Expiredate - Date.now()).getMinutes();
+ const RemainTime = this.todo.Expiredate;
+   // expiretime
+const indextoput = this.todo.usersCouponID.length;
+
 
 
     if (this.todoId) {
       this.todoService.Updatetod(this.todo, this.todoId).then(() => {
+        this.localnoti.scheduleNotificationUser( Date.now(), RemainTime, 'Delection', this.todoId, this.userId , indextoput ,
+        'Voucher Expire', 'Your Voucher' + this.todo.CuponName + 'has expired');
+        this.goBack();
         this.goBack();
       });
     } else {
-       this.todoService.addTodo(this.todo).then(() => {
+      this.todoId = 'Cupon' + Date.now();
+       this.todoService.addTodo(this.todo, this.todoId ).then(() => {
+        this.localnoti.scheduleNotificationUser( Date.now(), RemainTime, 'Delection', this.todoId, this.userId , indextoput ,
+        'Voucher Expire', 'Your Voucher' + this.todo.CuponName + 'has expired');
+        this.goBack();
         this.goBack();
        });
     }
+
+  }
   }
 
   signOut() {

@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { RetailerinfoService, Userinfo } from '../services/retailerinfo.service';
 import { Transaction, TransactionService } from '../services/transaction.service';
+import { AdminaccountService, Transaction2 } from '../services/adminaccount.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 // import { loginpage } from  './loginpage/loginpage.page'
 // test for surface pro
 
@@ -42,6 +44,20 @@ export class HomePage implements OnInit {
 
  };
 
+ adminacc:  Transaction2 = {
+  icon: 'arrow-up',
+  icon2: 'add',
+  title: '',
+  amount: 0,
+  date: Date.now(),
+  expense:  true,
+  month: 0,
+  username: '',
+  retailername: '',
+  totalbalance: 0
+
+};
+
  alltransaction: Transaction[];
 
  viewArray: Todo[] = [];
@@ -59,13 +75,18 @@ export class HomePage implements OnInit {
   myqrplaner: '',
   StoreLocid: '',
   eWallet: 0,
-  academicYear: ''
+  academicYear: '',
+  storeUniqeID: '',
+  storetype: '',
+  approval: 'unapprove',
+  date: Date.now()
  };
  userId = null;
  // for userauth
 userauth: Observable<firebase.User>;
 authState: any = null;
 
+ADMINID = 'TMFUWOirDNNFlLFmEVSvxlQwiju1';
 
   constructor(private todoService: TodoService,
   private router: Router,
@@ -73,7 +94,9 @@ authState: any = null;
   private authservice: AuthService,
   private userservice: RetailerinfoService,
   private afAuth: AngularFireAuth,
-  public actionSheetController: ActionSheetController) {
+  private gplus: GooglePlus,
+  public actionSheetController: ActionSheetController,
+  private adminservice: AdminaccountService, ) {
       this.user = authservice.currentUserObservable;
       this.tabsinfo = null; }
 
@@ -92,14 +115,17 @@ authState: any = null;
 
        this.todoService.Oninit();
        this.todoService.getTodos().subscribe( res => {
-
-           let index2 = 0;
+        let arraytoinsert  = [];
+         //  let index2 = 0;
          for (let index = 0; index < res.length ; index++) {
 
           for (let index3 = 0; index3 < res[index].usersCouponID.length ; index3++) {
              if (res[index].usersCouponID[index3].voucherUserId === this.userId) {
-              this.viewArray[index2] = res[index];
-              index2 = index2 + 1;
+              arraytoinsert   =  res[index].usersCouponID[index3];
+              res[index].usersCouponID = [];
+              res[index].usersCouponID.push(arraytoinsert);
+              this.viewArray.push(res[index]);
+           //   index2 = index2 + 1;
 
              }
 
@@ -122,9 +148,9 @@ authState: any = null;
 
   loadtranscation() {
 
-    this.transcationservice.inttansid(this.userId);
+   // this.transcationservice.inttansid(this.userId);
 
-    this.transcationservice.gettransactions().subscribe( res => {
+    this.transcationservice.getCollectionoTtranuser(this.userId).subscribe( res => {
       this.alltransaction = res;
     });
 
@@ -139,8 +165,10 @@ authState: any = null;
   }
 
   signOut() {
-    this.authservice.signOut();
-  }
+  this.gplus.logout().then(() => {
+      this.authservice.signOut();
+    });
+}
 
 
 
@@ -224,6 +252,9 @@ this. loadtranscation();
 
         if (this.userId) {
           this.transcationservice.addtransaction(this.transaction).then(() => {
+
+            // tslint:disable-next-line:max-line-length
+            this.addaccountinfo(this.transaction.amount, this.userinfos.userName + ' Has buy a E-wallet point with the system for RM ' + this.transaction.amount );
           });
         } else {
 
@@ -231,7 +262,25 @@ this. loadtranscation();
         this.loadTodo();
       }
 
+      addaccountinfo(amount: number, title: any) {
+        this.adminacc.title = title;
+        this.adminacc.amount = amount;
+        this.adminacc.totalbalance = + amount;
+        this.adminacc.month = new Date().getMonth();
+        this.adminacc.username = this.userinfos.userName;
 
+        this.adminservice.addtransaction(this.adminacc).then(() => {
+       //  this.LOADADMIN();
+        });
 
+      }
+
+      LOADADMIN() {
+        this.userservice.getUser(this.ADMINID).subscribe( res => {
+          this.userinfos = res;
+          this.userinfos.eWallet =  this.userinfos.eWallet + this.transaction.amount;
+          this.userservice.UpdateUser(this.userinfos, this.ADMINID).then(() => {} );
+        });
+      }
 
 }

@@ -32,6 +32,9 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 // import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 // import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Crop } from '@ionic-native/crop/ngx';
 
 
 @NgModule({
@@ -59,6 +62,9 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     Firebase,
     FCM,
     BarcodeScanner,
+    ImagePicker,
+    WebView,
+    Crop,
     LocalNotifications,
    // QRScanner,
   // Network,
